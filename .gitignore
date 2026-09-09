@@ -1,0 +1,20 @@
+# 敏感信息 - 绝对不要提交
+.env
+*.local
+
+# leetgo 本地状态/缓存
+.leetgo/
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
