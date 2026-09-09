@@ -6,6 +6,9 @@ password*
 self_msg.txt
 cookies.txt
 
+# 本地项目数据（含个人敏感信息）
+.workbuddy/
+
 # leetgo 本地状态/缓存
 .leetgo/
 .cache/
