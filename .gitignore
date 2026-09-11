@@ -12,6 +12,9 @@ cookies.txt
 # 临时工作脚本与中间数据（生成 leetcode-hot100.md / viewer.html 用）
 .scratch/
 
+# 刷题草稿（正式实现归档到 solutions/）
+test.py
+
 # leetgo 本地状态/缓存
 .leetgo/
 .cache/
