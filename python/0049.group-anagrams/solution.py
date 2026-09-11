@@ -4,18 +4,18 @@
 
 from typing import *
 from leetgo_py import *
+from collections import defaultdict
 
 # @lc code=begin
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        sorted_str_dict = {}
+        sorted_str_dict = defaultdict(list)
         for each_str in strs:
-            sorted_str = "".join(sorted(list(each_str)))
-            if sorted_str_dict.get(sorted_str) is None:
-                sorted_str_dict[sorted_str] = [each_str]
-            else:
-                sorted_str_dict[sorted_str].append(each_str)
+            cnt = [0] * 26
+            for s in each_str:
+                cnt[ord(s) - 97] += 1
+            sorted_str_dict[tuple(cnt)].append(each_str)
         return list(sorted_str_dict.values())
 
 # @lc code=end
