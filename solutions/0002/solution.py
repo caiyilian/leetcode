@@ -14,21 +14,45 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = ListNode(0)
-        cur = dummy
-        carry = 0
-        while l1 or l2 or carry:
-            total = carry
-            if l1:
-                total += l1.val
-                l1 = l1.next
-            if l2:
-                total += l2.val
-                l2 = l2.next
-            carry, val = divmod(total, 10)
-            cur.next = ListNode(val)
-            cur = cur.next
-        return dummy.next
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+        add_one = 0
+        p1 = l1
+        p2 = l2
+        # 第一阶段：处理两链共有的位数（谁先走完谁触发拼接/退出）
+        while True:
+            p1.val += p2.val + add_one
+            if p1.val > 9:
+                add_one = 1
+                p1.val = p1.val % 10
+            else:
+                add_one = 0
+            if p2.next is None:
+                break
+            if p1.next is None:
+                p1.next = p2.next
+                break
+            p1 = p1.next
+            p2 = p2.next
+
+        # 第二阶段：剩余位数继续传播进位
+        while True:
+            if p1.next is None:
+                break
+            p1 = p1.next
+            p1.val += add_one
+            if p1.val > 9:
+                add_one = 1
+                p1.val = p1.val % 10
+            else:
+                add_one = 0
+
+        # 最终进位：补一个最高位节点
+        if add_one:
+            p1.next = ListNode(1)
+        return l1
         
 
 # @lc code=end
