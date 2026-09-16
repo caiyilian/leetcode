@@ -1,0 +1,9 @@
+input:
+"aab"
+output:
+[["a","a","b"],["aa","b"]]
+
+input:
+"a"
+output:
+[["a"]]
