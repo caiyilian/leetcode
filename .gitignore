@@ -33,3 +33,4 @@ venv/
 *.swp
 # 树可视化输出（visualize_tree 生成的图片）
 tree*.png
+graph_output.png
