@@ -1,0 +1,5 @@
+input:
+["MedianFinder","addNum","addNum","findMedian","addNum","findMedian"]
+[[],[1],[2],[],[3],[]]
+output:
+[null, null, null, 1.5, null, 2.0]
