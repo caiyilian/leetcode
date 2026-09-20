@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4 portrait; margin: 4mm 4mm 3mm 4mm; }
+* { box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; margin: 0; font-size: 6.4pt; line-height: 1.25; color: #222; }
+h1 { font-size: 12pt; text-align: center; margin: 0 0 1mm; letter-spacing: 1px; }
+.sub { text-align: center; font-size: 6pt; color: #888; margin: 0 0 2mm; }
+.star { background: #fff6e0; border: 0.5px solid #f0d080; padding: 1.5mm 2mm; margin-bottom: 2mm; border-radius: 2px; }
+.star b { color: #c07300; }
+.star table { margin-top: 0.5mm; }
+.columns { column-count: 2; column-gap: 4mm; }
+.group { break-inside: avoid; margin-bottom: 1.5mm; }
+.group h2 { font-size: 7.8pt; margin: 0.8mm 0 0.3mm; color: #1557b0; border-bottom: 0.6px solid #b8cce8; padding-bottom: 0.3mm; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 0.4px 2px; vertical-align: top; }
+td.num { width: 15px; color: #aaa; text-align: right; white-space: nowrap; }
+td.title { width: 86px; font-weight: 600; white-space: nowrap; }
+td.idea { color: #333; }
+.starmark { color: #d97706; font-weight: 700; }
+.footer { margin-top: 1.5mm; break-inside: avoid; border-top: 0.8px solid #ccc; padding-top: 1mm; }
+.footer h2 { font-size: 7.8pt; margin: 0 0 0.5mm; color: #1557b0; }
+.footer table td { border: none; }
+</style>
+</head>
+<body>
+
+<h1>LeetCode 热题 100 · 速记卡</h1>
+<div class="sub">100 题全通关 · 每题一句话核心思路 · 2026-09-20</div>
+
+<div class="star">
+<b>⭐ 考前重点标记</b>：437 路径总和 III + 560 和为 K 子数组（机考重点：前缀和+哈希，配套看）；<b>72 编辑距离 + 1143 最长公共子序列（考前看 B站「华南溜达虎」对应两集）</b>。
+</div>
+
+<div class="columns">
+
+<div class="group"><h2>哈希（3）</h2><table>
+<tr><td class="num">1</td><td class="title">两数之和</td><td class="idea">哈希存 target-x</td></tr>
+<tr><td class="num">49</td><td class="title">字母异位词分组</td><td class="idea">计数/排序作 key + defaultdict</td></tr>
+<tr><td class="num">128</td><td class="title">最长连续序列</td><td class="idea">set + 从起点(x-1不在)数</td></tr>
+</table></div>
+
+<div class="group"><h2>双指针（4）</h2><table>
+<tr><td class="num">11</td><td class="title">盛最多水</td><td class="idea">左右双指针，谁矮移谁</td></tr>
+<tr><td class="num">15</td><td class="title">三数之和</td><td class="idea">排序+固定+双指针去重</td></tr>
+<tr><td class="num">42</td><td class="title">接雨水</td><td class="idea">左右双指针+两侧最高</td></tr>
+<tr><td class="num">283</td><td class="title">移动零</td><td class="idea">双指针非零交换</td></tr>
+</table></div>
+
+<div class="group"><h2>滑动窗口 / 子串（5）</h2><table>
+<tr><td class="num">3</td><td class="title">无重复最长子串</td><td class="idea">滑窗+dict 记位置</td></tr>
+<tr><td class="num">438</td><td class="title">字母异位词</td><td class="idea">定长滑窗+计数</td></tr>
+<tr><td class="num">76</td><td class="title">最小覆盖子串</td><td class="idea">滑窗+双哈希+valid</td></tr>
+<tr><td class="num">239</td><td class="title">滑窗最大值</td><td class="idea">单调递减队列(deque)</td></tr>
+<tr><td class="num">560</td><td class="title">和为K子数组<span class="starmark">⭐</span></td><td class="idea">前缀和+哈希计数</td></tr>
+</table></div>
+
+<div class="group"><h2>普通数组 / 矩阵（9）</h2><table>
+<tr><td class="num">41</td><td class="title">缺失第一个正数</td><td class="idea">原地归位(数组当哈希)</td></tr>
+<tr><td class="num">53</td><td class="title">最大子数组和</td><td class="idea">Kadane 滚动 max(n,dp+n)</td></tr>
+<tr><td class="num">56</td><td class="title">合并区间</td><td class="idea">排序+更新右边界</td></tr>
+<tr><td class="num">189</td><td class="title">轮转数组</td><td class="idea">切片/三次反转</td></tr>
+<tr><td class="num">238</td><td class="title">除自身乘积</td><td class="idea">左右两次累乘</td></tr>
+<tr><td class="num">48</td><td class="title">旋转图像</td><td class="idea">逐层四元素轮换</td></tr>
+<tr><td class="num">54</td><td class="title">螺旋矩阵</td><td class="idea">方向轮转+四边界</td></tr>
+<tr><td class="num">73</td><td class="title">矩阵置零</td><td class="idea">首行首列标记</td></tr>
+<tr><td class="num">240</td><td class="title">搜索二维矩阵II</td><td class="idea">右上角阶梯</td></tr>
+</table></div>
+
+<div class="group"><h2>链表（14）</h2><table>
+<tr><td class="num">2</td><td class="title">两数相加</td><td class="idea">逐位相加+进位</td></tr>
+<tr><td class="num">19</td><td class="title">删倒数第N</td><td class="idea">快慢(fast先走N)</td></tr>
+<tr><td class="num">21</td><td class="title">合并两个有序</td><td class="idea">归并</td></tr>
+<tr><td class="num">23</td><td class="title">合并K个</td><td class="idea">分治/最小堆</td></tr>
+<tr><td class="num">24</td><td class="title">两两交换</td><td class="idea">四指针/递归</td></tr>
+<tr><td class="num">25</td><td class="title">K个翻转</td><td class="idea">dummy+先判断+反转</td></tr>
+<tr><td class="num">138</td><td class="title">随机链表复制</td><td class="idea">哈希映射/交错</td></tr>
+<tr><td class="num">141</td><td class="title">环形链表</td><td class="idea">快慢指针</td></tr>
+<tr><td class="num">142</td><td class="title">环形链表II</td><td class="idea">快慢+二次相遇</td></tr>
+<tr><td class="num">146</td><td class="title">LRU缓存</td><td class="idea">哈希+双向链表</td></tr>
+<tr><td class="num">148</td><td class="title">排序链表</td><td class="idea">归并/自底向上</td></tr>
+<tr><td class="num">160</td><td class="title">相交链表</td><td class="idea">双指针换边</td></tr>
+<tr><td class="num">206</td><td class="title">反转链表</td><td class="idea">三指针迭代</td></tr>
+<tr><td class="num">234</td><td class="title">回文链表</td><td class="idea">快慢中点+反转后半</td></tr>
+</table></div>
+
+<div class="group"><h2>二叉树（15）</h2><table>
+<tr><td class="num">94</td><td class="title">中序遍历</td><td class="idea">递归/迭代栈</td></tr>
+<tr><td class="num">98</td><td class="title">验证BST</td><td class="idea">中序递增</td></tr>
+<tr><td class="num">101</td><td class="title">对称二叉树</td><td class="idea">镜像交叉递归</td></tr>
+<tr><td class="num">102</td><td class="title">层序遍历</td><td class="idea">队列/DFS+深度</td></tr>
+<tr><td class="num">104</td><td class="title">最大深度</td><td class="idea">1+max(左右)</td></tr>
+<tr><td class="num">105</td><td class="title">前中序构造</td><td class="idea">前序定根+中序分界</td></tr>
+<tr><td class="num">108</td><td class="title">有序转BST</td><td class="idea">中点取根</td></tr>
+<tr><td class="num">114</td><td class="title">展开为链表</td><td class="idea">找尾/沿右链</td></tr>
+<tr><td class="num">124</td><td class="title">最大路径和</td><td class="idea">返单腿,两腿更新</td></tr>
+<tr><td class="num">199</td><td class="title">右视图</td><td class="idea">层序取最右</td></tr>
+<tr><td class="num">226</td><td class="title">翻转二叉树</td><td class="idea">递归交换左右</td></tr>
+<tr><td class="num">230</td><td class="title">BST第K小</td><td class="idea">中序取第K</td></tr>
+<tr><td class="num">236</td><td class="title">最近公共祖先</td><td class="idea">递归左右找</td></tr>
+<tr><td class="num">437</td><td class="title">路径总和III<span class="starmark">⭐</span></td><td class="idea">前缀和+哈希+回溯</td></tr>
+<tr><td class="num">543</td><td class="title">直径</td><td class="idea">两腿更新,单腿喂父</td></tr>
+</table></div>
+
+<div class="group"><h2>图论（4）</h2><table>
+<tr><td class="num">200</td><td class="title">岛屿数量</td><td class="idea">DFS/BFS沉岛</td></tr>
+<tr><td class="num">207</td><td class="title">课程表</td><td class="idea">拓扑排序(入度)</td></tr>
+<tr><td class="num">208</td><td class="title">实现Trie</td><td class="idea">字典树</td></tr>
+<tr><td class="num">994</td><td class="title">腐烂橘子</td><td class="idea">多源BFS</td></tr>
+</table></div>
+
+<div class="group"><h2>回溯（8）</h2><table>
+<tr><td class="num">17</td><td class="title">电话号码</td><td class="idea">回溯+映射</td></tr>
+<tr><td class="num">22</td><td class="title">括号生成</td><td class="idea">回溯+左右计数</td></tr>
+<tr><td class="num">39</td><td class="title">组合总和</td><td class="idea">回溯+可重复</td></tr>
+<tr><td class="num">46</td><td class="title">全排列</td><td class="idea">回溯+visited</td></tr>
+<tr><td class="num">51</td><td class="title">N皇后</td><td class="idea">回溯+斜线检查</td></tr>
+<tr><td class="num">78</td><td class="title">子集</td><td class="idea">回溯/位运算</td></tr>
+<tr><td class="num">79</td><td class="title">单词搜索</td><td class="idea">DFS+回溯标记</td></tr>
+<tr><td class="num">131</td><td class="title">分割回文</td><td class="idea">回溯+回文判断</td></tr>
+</table></div>
+
+<div class="group"><h2>二分查找（6）</h2><table>
+<tr><td class="num">4</td><td class="title">两数组中位数</td><td class="idea">二分/归并</td></tr>
+<tr><td class="num">33</td><td class="title">搜索旋转数组</td><td class="idea">二分判哪边有序</td></tr>
+<tr><td class="num">34</td><td class="title">找元素区间</td><td class="idea">二分左右边界</td></tr>
+<tr><td class="num">35</td><td class="title">搜索插入位置</td><td class="idea">二分</td></tr>
+<tr><td class="num">74</td><td class="title">搜索二维矩阵</td><td class="idea">二分(当一维)</td></tr>
+<tr><td class="num">153</td><td class="title">旋转最小值</td><td class="idea">二分</td></tr>
+</table></div>
+
+<div class="group"><h2>栈 / 堆（8）</h2><table>
+<tr><td class="num">20</td><td class="title">有效括号</td><td class="idea">栈匹配</td></tr>
+<tr><td class="num">84</td><td class="title">柱状最大矩形</td><td class="idea">单调栈</td></tr>
+<tr><td class="num">155</td><td class="title">最小栈</td><td class="idea">辅助栈</td></tr>
+<tr><td class="num">394</td><td class="title">字符串解码</td><td class="idea">栈</td></tr>
+<tr><td class="num">739</td><td class="title">每日温度</td><td class="idea">单调栈</td></tr>
+<tr><td class="num">215</td><td class="title">第K大</td><td class="idea">最小堆/快选</td></tr>
+<tr><td class="num">295</td><td class="title">数据流中位数</td><td class="idea">双堆</td></tr>
+<tr><td class="num">347</td><td class="title">前K高频</td><td class="idea">堆/桶排序</td></tr>
+</table></div>
+
+<div class="group"><h2>贪心（4）</h2><table>
+<tr><td class="num">45</td><td class="title">跳跃游戏II</td><td class="idea">贪心最远可达</td></tr>
+<tr><td class="num">55</td><td class="title">跳跃游戏</td><td class="idea">贪心</td></tr>
+<tr><td class="num">121</td><td class="title">买卖股票</td><td class="idea">一次遍历记最低</td></tr>
+<tr><td class="num">763</td><td class="title">划分字母区间</td><td class="idea">贪心+最后位置</td></tr>
+</table></div>
+
+<div class="group"><h2>动态规划（15）</h2><table>
+<tr><td class="num">32</td><td class="title">最长有效括号</td><td class="idea">栈(墙)/DP</td></tr>
+<tr><td class="num">70</td><td class="title">爬楼梯</td><td class="idea">dp=dp-1+dp-2</td></tr>
+<tr><td class="num">118</td><td class="title">杨辉三角</td><td class="idea">逐行填</td></tr>
+<tr><td class="num">139</td><td class="title">单词拆分</td><td class="idea">dp[i]=dp[j] and in dict</td></tr>
+<tr><td class="num">152</td><td class="title">乘积最大</td><td class="idea">双状态(max/min)</td></tr>
+<tr><td class="num">198</td><td class="title">打家劫舍</td><td class="idea">max(dp-1,dp-2+n)</td></tr>
+<tr><td class="num">279</td><td class="title">完全平方数</td><td class="idea">凑数 min</td></tr>
+<tr><td class="num">300</td><td class="title">最长递增子序列</td><td class="idea">dp[i]=max(dp[j]+1)</td></tr>
+<tr><td class="num">322</td><td class="title">零钱兑换</td><td class="idea">凑数 min(硬币)</td></tr>
+<tr><td class="num">416</td><td class="title">分割等和子集</td><td class="idea">0/1背包</td></tr>
+<tr><td class="num">5</td><td class="title">最长回文子串</td><td class="idea">中心扩展(奇偶)</td></tr>
+<tr><td class="num">62</td><td class="title">不同路径</td><td class="idea">路径DP</td></tr>
+<tr><td class="num">64</td><td class="title">最小路径和</td><td class="idea">路径DP+min</td></tr>
+<tr><td class="num">72</td><td class="title">编辑距离<span class="starmark">⭐</span></td><td class="idea">相等左上/不等min(插删换)</td></tr>
+<tr><td class="num">1143</td><td class="title">最长公共子序列<span class="starmark">⭐</span></td><td class="idea">相等左上+1/不等max</td></tr>
+</table></div>
+
+<div class="group"><h2>技巧（5）</h2><table>
+<tr><td class="num">31</td><td class="title">下一个排列</td><td class="idea">升序对+交换+反转</td></tr>
+<tr><td class="num">75</td><td class="title">颜色分类</td><td class="idea">三指针(荷兰国旗)</td></tr>
+<tr><td class="num">136</td><td class="title">只出现一次</td><td class="idea">异或 a^a=0</td></tr>
+<tr><td class="num">169</td><td class="title">多数元素</td><td class="idea">摩尔投票</td></tr>
+<tr><td class="num">287</td><td class="title">寻找重复数</td><td class="idea">快慢(数组当链表)</td></tr>
+</table></div>
+
+</div>
+
+<div class="footer">
+<h2>高频套路速查</h2>
+<table>
+<tr><td style="width:50%"><b>双指针</b> 谁矮移谁/快慢 — 11、15、19、141</td><td><b>滑动窗口</b> 右扩左缩 — 3、76、438</td></tr>
+<tr><td><b>前缀和+哈希</b> 查差值 — 560、437</td><td><b>单调栈/队列</b> 下一个更大/最大 — 84、739、239</td></tr>
+<tr><td><b>快慢判圈</b> 二次相遇 — 141、142、287</td><td><b>二维DP</b> 上左/左上+1 — 62、64、72、1143</td></tr>
+<tr><td><b>凑数DP</b> min(dp[i-x]+1) — 279、322、416</td><td><b>中心扩展</b> 奇偶双中心 — 5</td></tr>
+<tr><td><b>摩尔投票</b> 相同+1不同-1 — 169</td><td><b>异或</b> a^a=0 — 136</td></tr>
+</table>
+</div>
+
+</body>
+</html>
