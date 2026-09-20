@@ -3900,7 +3900,7 @@ medianFinder.findMedian(); // return 2.0
 
 - `s` 仅由数字和英文字母组成
 
-## 1143. 最长公共子序列 ✅ 已完成
+## 1143. 最长公共子序列 ✅ 已完成 ⭐ 考前看 B站「华南溜达虎」
 
 - 难度：中等
 - 链接：https://leetcode.cn/problems/longest-common-subsequence/
@@ -3944,7 +3944,7 @@ medianFinder.findMedian(); // return 2.0
 
 - `text1` 和 `text2` 仅由小写英文字符组成。
 
-## 72. 编辑距离 ✅ 已完成
+## 72. 编辑距离 ✅ 已完成 ⭐ 考前看 B站「华南溜达虎」
 
 - 难度：中等
 - 链接：https://leetcode.cn/problems/edit-distance/
