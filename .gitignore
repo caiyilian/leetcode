@@ -14,6 +14,7 @@ cookies.txt
 
 # 刷题草稿（正式实现归档到 solutions/）
 test*.py
+main.py
 
 # leetgo 本地状态/缓存
 .leetgo/
