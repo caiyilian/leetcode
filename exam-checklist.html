@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4 portrait; margin: 8mm; }
+* { box-sizing: border-box; }
+body { font-family: "Microsoft YaHei","PingFang SC",sans-serif; margin: 0; font-size: 9pt; line-height: 1.4; color: #1a1a1a; }
+h1 { font-size: 16pt; text-align: center; margin: 0 0 1mm; }
+.sub { text-align: center; font-size: 8pt; color: #888; margin-bottom: 3mm; }
+h2 { font-size: 11pt; margin: 3mm 0 1.5mm; padding: 1mm 2mm; border-radius: 2px; }
+.p0 { background: #ffe8e8; color: #b00020; border-left: 3px solid #b00020; }
+.p1 { background: #fff4e0; color: #b06000; border-left: 3px solid #d08000; }
+.p2 { background: #e8f4e8; color: #206020; border-left: 3px solid #208020; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1mm; }
+th { background: #f0f0f0; font-size: 8.5pt; padding: 1mm; text-align: left; border: 0.5px solid #ccc; }
+td { padding: 1mm; border: 0.5px solid #ddd; vertical-align: top; font-size: 8.5pt; }
+td.num { width: 42px; font-weight: 700; color: #b00020; text-align: center; white-space: nowrap; }
+td.tag { width: 130px; font-size: 8pt; color: #666; }
+code { background: #f5f5f5; padding: 0 2px; border-radius: 2px; font-family: Consolas,monospace; font-size: 8pt; color: #c7254e; }
+.plan { background: #f8f8ff; border: 0.8px solid #ccd; padding: 2mm 3mm; border-radius: 3px; margin-top: 2mm; }
+.plan ol { margin: 0; padding-left: 5mm; }
+.plan li { margin: 0.8mm 0; }
+.foot { margin-top: 2mm; font-size: 7.5pt; color: #999; text-align: center; }
+.one-line td { font-size: 8.5pt; }
+</style>
+</head>
+<body>
+
+<h1>🎯 机考冲刺清单 · HOT100 重点标记题</h1>
+<div class="sub">2026-09-23 · 仅收录你当时主动要求标记的题目</div>
+
+<h2 class="p0">🔴 第一优先：明确要求"必看/必复习"（7 题）</h2>
+<table>
+<tr><th>#</th><th>题目</th><th>标记</th><th>要复习什么</th></tr>
+<tr><td class="num">437</td><td><b>路径总和 III</b></td><td class="tag">⚡⚡⚡ 机考前一天必看</td><td>① 查差公式 <code>cur_sum - targetSum</code> ② <code>{0:1}</code> 虚拟起点 ③ <b>回溯撤销防跨子树</b> ④ 单节点路径自动覆盖</td></tr>
+<tr><td class="num">560</td><td><b>和为 K 的子数组</b></td><td class="tag">⭐ 面试前重点看</td><td>前缀和 + 哈希计数；理解"<b>查差值而非枚举对</b>"</td></tr>
+<tr><td class="num">84</td><td><b>柱状图中最大的矩形</b></td><td class="tag">⚡⚡ 机考前必看</td><td>单调递增栈 + <b>双哨兵</b> + 弹出结算</td></tr>
+<tr><td class="num">35</td><td><b>搜索插入位置</b></td><td class="tag">⚡⚡ 机考之前必看</td><td><b>标准二分模板</b>（见 solution_readable.py）</td></tr>
+<tr><td class="num">236</td><td><b>二叉树的最近公共祖先</b></td><td class="tag">⚡⚡ 机考必看（"太妙了"）</td><td>三情况归纳，<b>递归 10 行</b>（见 solution_readable.py）</td></tr>
+<tr><td class="num">142</td><td><b>环形链表 II</b></td><td class="tag">⭐ 面试前重点看</td><td>快慢指针 + 二次相遇；<b>步数可以是 0</b>——先判断再移动</td></tr>
+<tr><td class="num">543</td><td><b>二叉树的直径</b></td><td class="tag">⚡⚡ 重点标记</td><td><b>递归返回值 ≠ 题目答案</b>（两腿更新答案 / 单腿喂父节点）</td></tr>
+</table>
+
+<h2 class="p1">🟡 第二优先：你说要看 B 站视频的（2 题）</h2>
+<table>
+<tr><th>#</th><th>题目</th><th>标记</th><th>视频</th></tr>
+<tr><td class="num">72</td><td><b>编辑距离</b></td><td class="tag">⭐ 考前看视频</td><td>B站「<b>华南溜达虎</b>」对应那一集</td></tr>
+<tr><td class="num">1143</td><td><b>最长公共子序列</b></td><td class="tag">⭐ 考前看视频</td><td>B站「<b>华南溜达虎</b>」对应那一集</td></tr>
+</table>
+<div style="font-size:8pt;color:#666;margin:-0.5mm 0 1mm 1mm;">💡 字符串 DP 双经典，同一套"最后一步分析"；华南溜达虎讲解最浅显易懂。</div>
+
+<h2 class="p2">🟢 第三优先：其他标记要点（顺手扫一眼）</h2>
+<table>
+<tr><th>#</th><th>题目</th><th>要点</th></tr>
+<tr><td class="num">101</td><td>对称二叉树</td><td>⚡ <b>空树 = True</b></td></tr>
+<tr><td class="num">108</td><td>有序数组转 BST</td><td>⚡ 进阶传下标区间 O(n)（面试加分）</td></tr>
+<tr><td class="num">300</td><td>最长递增子序列</td><td>⚡ 依赖前面所有 → <b>不能用滚动变量</b></td></tr>
+<tr><td class="num">4</td><td>两正序数组中位数</td><td>⚡ 二分切割用"数量"语义比"索引"少一半出错</td></tr>
+<tr><td class="num">34</td><td>找元素区间</td><td>⚡ 骨架对了就不需要补丁</td></tr>
+<tr><td class="num">153</td><td>旋转数组最小值</td><td>⚡ 通用规律（见 result.md）</td></tr>
+<tr><td class="num">739</td><td>每日温度</td><td>⚡ 核心教训（见 result.md）</td></tr>
+<tr><td class="num">189</td><td>轮转数组</td><td>⚡ 提交用切片，讲反转思路</td></tr>
+</table>
+
+<div class="plan">
+<b>📋 考前 30 分钟速览顺序</b>
+<ol>
+<li><b>437</b> 路径总和 III —— 最高优先，前缀和+回溯</li>
+<li><b>560</b> 和为 K 的子数组 —— 和 437 配套</li>
+<li><b>84</b> 柱状图最大矩形 —— 单调栈模板</li>
+<li><b>35</b> 搜索插入位置 —— 二分模板母题</li>
+<li><b>236</b> 最近公共祖先 —— 递归 10 行</li>
+<li><b>543</b> 直径 / <b>142</b> 环形链表 II —— 递归返回值 & 快慢细节</li>
+<li><b>72 / 1143</b>（看视频）—— 时间够就 B 站华南溜达虎</li>
+</ol>
+</div>
+
+<h2>🔑 一句话核心（带走这 9 句）</h2>
+<table class="one-line">
+<tr><th>题</th><th>一句话</th><th>题</th><th>一句话</th></tr>
+<tr><td class="num">437</td><td>前缀和+哈希+<b>回溯撤销</b></td><td class="num">543</td><td>返回单腿，<b>两腿更新答案</b></td></tr>
+<tr><td class="num">560</td><td>前缀和+哈希（查差）</td><td class="num">72</td><td>相等取左上，不等 min(插删换)+1</td></tr>
+<tr><td class="num">84</td><td>单调栈+双哨兵结算</td><td class="num">1143</td><td>相等左上+1，不等 max(上,左)</td></tr>
+<tr><td class="num">35</td><td>二分 <code>while l&lt;=r</code> 返回 l</td><td class="num">142</td><td>相遇后回起点同走=环入口</td></tr>
+<tr><td class="num">236</td><td>一边有一边没有→返回有的</td><td></td><td></td></tr>
+</table>
+
+<div class="foot">归档路径：leetcode-hot100-v1.md（题面）· solutions/&lt;题号&gt;/（analysis.md 解析 / result.md 记录）· hot100-review.pdf（速记卡）</div>
+
+</body>
+</html>
