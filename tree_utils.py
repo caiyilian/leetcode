@@ -4,7 +4,7 @@ from collections import deque
 
 # matplotlib 懒加载：只有调用 visualize_tree / show_tree 时才需要
 # （build_tree / TreeNode 可在无 matplotlib 的环境使用）
-
+null = None
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
