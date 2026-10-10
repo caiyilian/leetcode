@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4; margin: 10mm; }
+* { box-sizing: border-box; }
+body { font-family: "Microsoft YaHei","PingFang SC",sans-serif; margin: 0; font-size: 9pt; color: #1a1a1a; }
+h1 { text-align: center; font-size: 15pt; margin: 0 0 1mm; }
+.sub { text-align: center; font-size: 8pt; color: #888; margin-bottom: 3mm; }
+.card { border: 0.8px solid #ccc; border-radius: 8px; padding: 3mm 4mm; margin-bottom: 4mm; page-break-inside: avoid; }
+.card-title { font-size: 11.5pt; font-weight: 500; color: #185FA5; }
+.card-title .tag { font-size: 8pt; color: #888; font-weight: 400; margin-left: 2mm; }
+.card-body { display: flex; gap: 4mm; margin-top: 2mm; }
+.card-text { width: 38%; }
+.card-visual { width: 62%; }
+.card-text .desc { color: #333; font-size: 8.8pt; }
+.card-text .ex { background: #f5f7fa; border-radius: 4px; padding: 1.5mm 2.5mm; font-family: Consolas,monospace; font-size: 8pt; margin-top: 1.5mm; }
+.hint { margin-top: 1.5mm; font-size: 8.5pt; color: #993C1D; font-weight: 500; }
+svg { width: 100%; height: auto; border: 0.6px solid #eee; border-radius: 6px; background: #fcfcfd; }
+</style>
+</head>
+<body>
+
+<h1>LeetCode HOT 100 可视复习卡 · 样例版</h1>
+<div class="sub">每题一卡：题面 + 示例 + 核心套路可视化 + 一句话口诀（2026-09-26 样例 5 题）</div>
+
+<!-- ============ 1. 两数之和 ============ -->
+<div class="card">
+<div class="card-title">#1 两数之和 <span class="tag">简单 · 数组/哈希表</span></div>
+<div class="card-body">
+<div class="card-text">
+<div class="desc">在数组中找到两个数，和为 target，返回下标。</div>
+<div class="ex">nums=[2,7,11,15] target=9 → [0,1]</div>
+<div class="hint">⚡ 哈希补数：遍历时查「target - 当前值」在不在哈希表里，在就配对。</div>
+</div>
+<div class="card-visual">
+<svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+<text x="10" y="20" font-size="10" fill="#444">遍历 nums，边查边存哈希表</text>
+<rect x="10" y="30" width="50" height="30" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/><text x="35" y="50" font-size="11" text-anchor="middle" fill="#042C53">2</text>
+<rect x="65" y="30" width="50" height="30" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/><text x="90" y="50" font-size="11" text-anchor="middle" fill="#042C53">7</text>
+<rect x="120" y="30" width="50" height="30" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/><text x="145" y="50" font-size="11" text-anchor="middle" fill="#042C53">11</text>
+<rect x="175" y="30" width="50" height="30" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/><text x="200" y="50" font-size="11" text-anchor="middle" fill="#042C53">15</text>
+<text x="240" y="50" font-size="10" fill="#666">i 从左到右</text>
+<line x1="30" y1="72" x2="30" y2="105" stroke="#888" stroke-width="1"/>
+<line x1="90" y1="72" x2="90" y2="105" stroke="#888" stroke-width="1"/>
+<rect x="10" y="108" width="40" height="28" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/><text x="30" y="127" font-size="10" text-anchor="middle" fill="#412402">2</text>
+<rect x="70" y="108" width="40" height="28" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/><text x="90" y="127" font-size="10" text-anchor="middle" fill="#412402">7</text>
+<text x="120" y="127" font-size="10" fill="#666">哈希表{值:下标}</text>
+<path d="M35 105 C 20 100, 15 90, 20 80" fill="none" stroke="#D85A30" stroke-width="1.5" marker-end="url(#a1)"/>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<rect x="95" y="70" width="170" height="28" rx="6" fill="#FCEBEB" stroke="#A32D2D" stroke-width="1"/>
+<text x="180" y="89" font-size="10" text-anchor="middle" fill="#501313">读到 7 → 查 target-7=2 → 命中！</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- ============ 15. 三数之和 ============ -->
+<div class="card">
+<div class="card-title">#15 三数之和 <span class="tag">中等 · 双指针</span></div>
+<div class="card-body">
+<div class="card-text">
+<div class="desc">找三个数使和为 0，不能重复三元组。</div>
+<div class="ex">nums=[-1,0,1,2,-1,-4] → [[-1,-1,2],[-1,0,1]]</div>
+<div class="hint">⚡ 排序 + 固定一个数 + 双指针夹逼；跳过重复值。</div>
+</div>
+<div class="card-visual">
+<svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+<text x="10" y="20" font-size="10" fill="#444">排序后固定 i，双指针 l/r 向中间夹</text>
+<rect x="10" y="35" width="52" height="32" fill="#FBEAF0" stroke="#993556" stroke-width="1.2"/><text x="36" y="56" font-size="11" text-anchor="middle" fill="#4B1528">-4</text>
+<rect x="66" y="35" width="52" height="32" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.2"/><text x="92" y="56" font-size="11" text-anchor="middle" fill="#042C53">-1</text>
+<rect x="122" y="35" width="52" height="32" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="148" y="56" font-size="11" text-anchor="middle" fill="#26215C">-1</text>
+<rect x="178" y="35" width="52" height="32" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="204" y="56" font-size="11" text-anchor="middle" fill="#26215C">0</text>
+<rect x="234" y="35" width="52" height="32" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="260" y="56" font-size="11" text-anchor="middle" fill="#26215C">1</text>
+<rect x="290" y="35" width="52" height="32" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.2"/><text x="316" y="56" font-size="11" text-anchor="middle" fill="#042C53">2</text>
+<text x="20" y="84" font-size="9" fill="#993556" font-weight="500">i 固定</text>
+<text x="80" y="84" font-size="9" fill="#185FA5" font-weight="500">l →</text>
+<text x="315" y="84" font-size="9" fill="#185FA5" font-weight="500">← r</text>
+<path d="M60 70 L 88 70" stroke="#993556" stroke-width="1.2" fill="none" marker-end="url(#b1)"/>
+<path d="M330 70 L 302 70" stroke="#185FA5" stroke-width="1.2" fill="none" marker-end="url(#b1)"/>
+<defs><marker id="b1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<rect x="10" y="95" width="400" height="40" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+<text x="210" y="112" font-size="10" text-anchor="middle" fill="#2C2C2A">sum = nums[i]+nums[l]+nums[r]</text>
+<text x="210" y="128" font-size="10" text-anchor="middle" fill="#444">=0 记下→l++,r--；&lt;0 → l++；&gt;0 → r--（去重：跳过相同值）</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- ============ 206. 反转链表 ============ -->
+<div class="card">
+<div class="card-title">#206 反转链表 <span class="tag">简单 · 链表</span></div>
+<div class="card-body">
+<div class="card-text">
+<div class="desc">反转单链表，返回新头。</div>
+<div class="ex">1→2→3→4→5 → 5→4→3→2→1</div>
+<div class="hint">⚡ 三指针：p1 指向新链表头，p2 后移，逐个把 p2.next 指回 p1（或递归）。</div>
+</div>
+<div class="card-visual">
+<svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+<text x="10" y="20" font-size="10" fill="#444">三指针迭代：p3→p1→p2 步步推进</text>
+<g font-size="10" fill="#26215C">
+<rect x="10" y="40" width="60" height="30" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.2"/><text x="40" y="60" text-anchor="middle">1</text>
+<rect x="80" y="40" width="60" height="30" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.2"/><text x="110" y="60" text-anchor="middle">2</text>
+<rect x="150" y="40" width="60" height="30" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.2"/><text x="180" y="60" text-anchor="middle">3</text>
+<rect x="220" y="40" width="60" height="30" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.2"/><text x="250" y="60" text-anchor="middle">4</text>
+<rect x="290" y="40" width="60" height="30" fill="#F1EFE8" stroke="#888" stroke-width="1"/><text x="320" y="60" text-anchor="middle" fill="#888">None</text>
+</g>
+<line x1="70" y1="55" x2="80" y2="55" stroke="#534AB7" stroke-width="1.5" marker-end="url(#c1)"/>
+<line x1="140" y1="55" x2="150" y2="55" stroke="#534AB7" stroke-width="1.5" marker-end="url(#c1)"/>
+<line x1="210" y1="55" x2="220" y2="55" stroke="#534AB7" stroke-width="1.5" marker-end="url(#c1)"/>
+<line x1="280" y1="55" x2="290" y2="55" stroke="#534AB7" stroke-width="1.5" marker-end="url(#c1)"/>
+<defs><marker id="c1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text x="50" y="30" font-size="9" fill="#D85A30" font-weight="500">p3</text>
+<text x="120" y="30" font-size="9" fill="#185FA5" font-weight="500">p1</text>
+<text x="190" y="30" font-size="9" fill="#3B6D11" font-weight="500">p2</text>
+<text x="10" y="100" font-size="9.5" fill="#333">每步：p1.next = p3（断开回头）→ 三指针整体后移一格</text>
+<rect x="10" y="110" width="400" height="28" rx="6" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.8"/>
+<text x="210" y="128" font-size="10" text-anchor="middle" fill="#173404">结果：1 ← 2 ← 3 ← 4；空链表特判，返回 p1（原尾）</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- ============ 312. 戳气球 ============ -->
+<div class="card">
+<div class="card-title">#312 戳气球 <span class="tag">困难 · 区间 DP</span></div>
+<div class="card-body">
+<div class="card-text">
+<div class="desc">戳破气球得分=左×本×右，求最大总分。</div>
+<div class="ex">nums=[3,1,5,8] → 167</div>
+<div class="hint">⚡ 反向思维：枚举「最后一个戳的 k」，左右子区间独立。</div>
+</div>
+<div class="card-visual">
+<svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+<text x="10" y="20" font-size="10" fill="#444">dp[i][j] = max over k (dp[i][k] + nums[i]*nums[k]*nums[j] + dp[k][j])</text>
+<text x="10" y="40" font-size="9" fill="#666">补哨兵 1：[1, 3, 1, 5, 8, 1]，开区间 (i,j)</text>
+<g font-size="10">
+<rect x="10" y="55" width="56" height="34" fill="#F1EFE8" stroke="#888" stroke-width="1"/><text x="38" y="77" text-anchor="middle" fill="#888">1</text>
+<rect x="71" y="55" width="56" height="34" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="99" y="77" text-anchor="middle" fill="#26215C">3</text>
+<rect x="132" y="55" width="56" height="34" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="160" y="77" text-anchor="middle" fill="#26215C">1</text>
+<rect x="193" y="55" width="56" height="34" fill="#FBEAF0" stroke="#993556" stroke-width="1.4"/><text x="221" y="77" text-anchor="middle" fill="#4B1528">k=5</text>
+<rect x="254" y="55" width="56" height="34" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/><text x="282" y="77" text-anchor="middle" fill="#26215C">8</text>
+<rect x="315" y="55" width="56" height="34" fill="#F1EFE8" stroke="#888" stroke-width="1"/><text x="343" y="77" text-anchor="middle" fill="#888">1</text>
+</g>
+<text x="36" y="50" font-size="8.5" fill="#888">i</text>
+<text x="342" y="50" font-size="8.5" fill="#888">j</text>
+<path d="M45 92 C 200 120, 200 120, 340 92" fill="none" stroke="#993556" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="200" y="112" font-size="9" fill="#993556">得分 = 1 × 5 × 1 = 5（最后戳 k，邻居只剩边界 i、j）</text>
+<rect x="10" y="120" width="400" height="24" rx="6" fill="#FBEAF0" stroke="#993556" stroke-width="0.8"/>
+<text x="210" y="135" font-size="9.5" text-anchor="middle" fill="#72243E">左右子区间 (i,k)、(k,j) 独立 → 按区间长度从小到大填表</text>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- ============ 437. 路径总和 III ============ -->
+<div class="card">
+<div class="card-title">#437 路径总和 III <span class="tag">中等 · 前缀和+回溯</span></div>
+<div class="card-body">
+<div class="card-text">
+<div class="desc">树中找路径和=targetSum 的路径数（任意起点，向下）。</div>
+<div class="ex">root=[10,5,-3,3,2,null,11,3,-2,null,1] target=8 → 3</div>
+<div class="hint">⚡ 前缀和+哈希：查 cur-targetSum；{0:1} 起点；回溯撤销防跨子树。</div>
+</div>
+<div class="card-visual">
+<svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+<g font-size="10">
+<rect x="180" y="20" width="56" height="30" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/><text x="208" y="40" text-anchor="middle" fill="#173404">10</text>
+<rect x="90" y="65" width="56" height="30" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/><text x="118" y="85" text-anchor="middle" fill="#173404">5</text>
+<rect x="270" y="65" width="56" height="30" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/><text x="298" y="85" text-anchor="middle" fill="#173404">-3</text>
+<rect x="25" y="110" width="56" height="30" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/><text x="53" y="130" text-anchor="middle" fill="#173404">3</text>
+<rect x="155" y="110" width="56" height="30" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1"/><text x="183" y="130" text-anchor="middle" fill="#173404">2</text>
+<rect x="300" y="110" width="56" height="30" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.2"/><text x="328" y="130" text-anchor="middle" fill="#412402">11</text>
+</g>
+<line x1="205" y1="50" x2="125" y2="63" stroke="#3B6D11" stroke-width="1.2"/>
+<line x1="230" y1="50" x2="290" y2="63" stroke="#3B6D11" stroke-width="1.2"/>
+<line x1="118" y1="95" x2="62" y2="108" stroke="#3B6D11" stroke-width="1.2"/>
+<line x1="128" y1="95" x2="176" y2="108" stroke="#3B6D11" stroke-width="1.2"/>
+<line x1="310" y1="95" x2="322" y2="108" stroke="#3B6D11" stroke-width="1.2"/>
+<rect x="200" y="115" width="180" height="28" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="290" y="133" font-size="9.5" text-anchor="middle" fill="#04342C">路径 5→-3→11? 10→-3→11 和=18</text>
+<text x="10" y="15" font-size="9" fill="#444">DFS 同时维护前缀和哈希表：cur=10+5+3=18 查 18-8=10 ✓ 计数</text>
+<rect x="10" y="128" width="390" height="18" rx="5" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.6"/>
+<text x="205" y="140" font-size="8.8" text-anchor="middle" fill="#501313">回溯时把当前前缀和从哈希表删掉（防串到兄弟子树）</text>
+</svg>
+</div>
+</div>
+</div>
+
+</body>
+</html>
