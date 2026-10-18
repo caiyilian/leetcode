@@ -14,37 +14,29 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        if not head:
-            return False
-        p_fast = head
         p_slow = head
-        while (p_fast and p_fast.next):
-            p_fast = p_fast.next.next
-            p_slow = p_slow.next
-        p_slow = self.reverse_list(p_slow)
         p_fast = head
-        while p_slow:
-            if p_fast.val != p_slow.val:
-                return False
-            p_fast = p_fast.next
+        while p_fast and p_fast.next:
             p_slow = p_slow.next
+            p_fast = p_fast.next.next
+        p_fast = head
+        p_slow = self.reverseList(p_slow)
+        while p_slow:
+            if p_slow.val != p_fast.val:
+                return False
+            p_slow = p_slow.next
+            p_fast = p_fast.next
         return True
 
-    def reverse_list(self, head):
-        if not head:
-            return head
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         p1 = head
-        p2 = p1.next
-        p3 = None
-        while True:
-            p1.next = p3
-            if p2 is None:
-                break
-            p3 = p1
-            p1 = p2
-            p2 = p2.next
-        return p1
-        
+        p2 = None
+        while p1:
+            p3 = p1.next
+            p1.next = p2
+            p2 = p1
+            p1 = p3
+        return p2
 
 # @lc code=end
 
