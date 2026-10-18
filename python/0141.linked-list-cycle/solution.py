@@ -15,14 +15,20 @@ from leetgo_py import *
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        if not head:
-            return False
+        """
+        快慢指针
+        如果没有环，快指针会到None
+        如果有，快慢指针先会和，然后其中一个指针到起点，然后两个指针同时一次走一步，再次相交
+        就是相交点
+        """
         p_fast = head
         p_slow = head
+
         while p_fast and p_fast.next:
-            p_fast = p_fast.next.next
             p_slow = p_slow.next
-            if p_fast == p_slow:
+            p_fast = p_fast.next.next
+            if p_slow is p_fast:
+                # 碰到一起了
                 return True
         return False
         
