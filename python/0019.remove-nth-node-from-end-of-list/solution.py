@@ -14,21 +14,23 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        if not head:
-            return head
+        """
+        快慢指针，但是这里的快慢不是步长，而是快指针先走n步，然后两个指针一起一步一步走
+        最终快指针是None的时候，慢指针到达要删除的地方
+        """
+        dummy = ListNode(0)
+        dummy.next = head
         p_fast = head
         p_slow = head
+        prev = dummy
         for _ in range(n):
             p_fast = p_fast.next
-        if p_fast is None:
-            # 要删除的就是当前节点
-            return head.next
-        while p_fast.next:
-            p_slow = p_slow.next
+        while p_fast:
             p_fast = p_fast.next
-        # 此时，p_slow的下一个节点就是要删除的
-        p_slow.next = p_slow.next.next
-        return head
+            prev = prev.next
+            p_slow = p_slow.next
+        prev.next = p_slow.next
+        return dummy.next
         
 
 # @lc code=end
