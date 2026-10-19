@@ -14,34 +14,30 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        if not list1:
-            return list2
-        if not list2:
-            return list1
-        if list1.val > list2.val:
-            list1, list2 = list2, list1
-        
-        p1 = list1
-        p2 = list2
-        p3 = p2
-        p4 = None
-
-        while p2:
-            if p1.val <= p2.val:
-                if p1.next is None:
-                    p1.next = p2
-                    return list1
-                if p1.next.val >= p2.val:
-                    # 把p2当前值插到p1之后
-                    p3 = p2.next
-                    p4 = p1.next
-                    p1.next = p2
-                    p2.next = p4
-                    p2 = p3
+        # 哨兵
+        result = ListNode(0)
+        p = result
+        """
+        对比list1和list2的值，小的，result.next = list
+        list = list.next
+        然后继续，如果某一个为None，那就只看另一个
+        """
+        while list1 or list2:
+            if list1 is None:
+                result.next = list2
+                list2 = list2.next
+            elif list2 is None:
+                result.next = list1
+                list1 = list1.next
+            else:
+                if list1.val <= list2.val:
+                    result.next = list1
+                    list1 = list1.next
                 else:
-                    p1 = p1.next
-        
-        return list1
+                    result.next = list2
+                    list2 = list2.next
+            result = result.next
+        return p.next
         
 
 # @lc code=end
