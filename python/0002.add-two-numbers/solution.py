@@ -18,41 +18,33 @@ class Solution:
             return l2
         if not l2:
             return l1
-        add_one = 0
-        p1 = l1
-        p2 = l2
-        # 第一阶段：处理两链共有的位数（谁先走完谁触发拼接/退出）
-        while True:
-            p1.val += p2.val + add_one
-            if p1.val > 9:
-                add_one = 1
-                p1.val = p1.val % 10
+        flag = 0
+        p = l1
+        while l1 and l2:
+            l1.val += l2.val + flag
+            if l1.val > 9:
+                flag = 1
+                l1.val = l1.val % 10
             else:
-                add_one = 0
-            if p2.next is None:
-                break
-            if p1.next is None:
-                p1.next = p2.next
-                break
-            p1 = p1.next
-            p2 = p2.next
-
-        # 第二阶段：剩余位数继续传播进位
-        while True:
-            if p1.next is None:
-                break
-            p1 = p1.next
-            p1.val += add_one
-            if p1.val > 9:
-                add_one = 1
-                p1.val = p1.val % 10
+                flag = 0
+            prev = l1
+            l1 = l1.next
+            l2 = l2.next
+        if l1 is None:
+            prev.next = l2
+            l1 = l2
+        while l1:
+            l1.val += flag
+            if l1.val > 9:
+                flag = 1
+                l1.val = l1.val % 10
             else:
-                add_one = 0
-
-        # 最终进位：补一个最高位节点
-        if add_one:
-            p1.next = ListNode(1)
-        return l1
+                flag = 0
+            prev = l1
+            l1 = l1.next
+        if flag:
+            prev.next = ListNode(1)
+        return p
         
 
 # @lc code=end
