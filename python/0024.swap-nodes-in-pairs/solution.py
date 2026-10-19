@@ -14,25 +14,16 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return head
         dummy = ListNode(0)
         dummy.next = head
-        p1 = dummy
-        p2 = p1.next
-        p3 = p2.next
-        p4 = p3.next
-        while True:
-            # 交换p2,p3
-            p2.next = p4
-            p3.next = p2
-            p1.next = p3
-            if not (p4 and p4.next):
-                break
-            p1 = p3.next # p1向后移动两个格子
-            p2 = p4
-            p3 = p4.next
-            p4 = p3.next
+        prev = dummy
+        while prev.next and prev.next.next:  # 有 p1 且有 p2 才交换（break 并入条件）
+            p1 = prev.next
+            p2 = p1.next
+            prev.next = p2
+            p1.next = p2.next
+            p2.next = p1
+            prev = p1
         return dummy.next
         
 
