@@ -14,49 +14,51 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if not (head and head.next):
+        """
+        快慢指针，使得慢指针指向右边一半
+        """
+        if not head:
             return head
-        return self.half_list(head)
 
-    def half_list(self, head):
-        if not head.next:
-            return head
-        p1 = head
-        p2 = head
-        p0 = ListNode(0)
-        p0.next = head
-        while p2 and p2.next:
-            p1 = p1.next
-            p2 = p2.next.next
-            p0 = p0.next
-        p0.next = None
-        return self.mergeTwoLists(self.half_list(head), self.half_list(p1))
+        def get_half(p):
+            p_slow = p
+            p_fast = p
+            prev = p
+            while p_fast and p_fast.next:
+                p_fast = p_fast.next.next
+                prev = p_slow
+                p_slow = p_slow.next
+            prev.next = None          # 切断成两条链 [p..prev] 和 [p_slow..]
+            return p, p_slow          # 头和尾（右半头）
 
-    def mergeTwoLists(self, list1, list2):
-        if not list1:
-            return list2
-        if not list2:
-            return list1
-        if list1.val > list2.val:
-            list1, list2 = list2, list1
-        p1 = list1
-        p2 = list2
-        p3 = p2
-        p4 = None
-        while p2:
-            if p1.val <= p2.val:
-                if p1.next is None:
-                    p1.next = p2
-                    return list1
-                if p1.next.val >= p2.val:
-                    p3 = p2.next
-                    p4 = p1.next
-                    p1.next = p2
-                    p2.next = p4
-                    p2 = p3
+        def merge_node(p1, p2):
+            # 合并两个升序链表（21 题哨兵归并）
+            dummy = ListNode(0)
+            curr = dummy
+            while p1 and p2:
+                if p1.val > p2.val:
+                    curr.next = p2
+                    p2 = p2.next
                 else:
+                    curr.next = p1
                     p1 = p1.next
-        return list1
+                curr = curr.next
+            # 其中一个为None
+            if p1:
+                curr.next = p1
+            else:
+                curr.next = p2
+            return dummy.next
+
+        def fun(p):
+            if p.next is None:        # 单节点天然有序
+                return p
+            p_head, p_tail = get_half(p)
+            p_head = fun(p_head)      # 左半排序
+            p_tail = fun(p_tail)      # 右半排序
+            return merge_node(p_head, p_tail)
+
+        return fun(head)
         
 
 # @lc code=end
