@@ -18,19 +18,22 @@ class Node:
 
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        if not head:
-            return None
-        dummy = Node(0)
-        p_d = dummy
+        hash_map = {None: None}
         p = head
-        hash_dict = {}
+        dummy = Node(0)
+        prev = dummy
         while p:
-            p_d.next = Node(p.val)
-            p_d = p_d.next
-            hash_dict[p] = p_d
+            new = Node(p.val)
+            prev.next = new
+            prev = new
+            hash_map[p] = new
             p = p.next
-        for key, value in hash_dict.items():
-            value.random = hash_dict.get(key.random, None)
+        p = head
+        new = dummy.next
+        while p:
+            new.random = hash_map[p.random]
+            new = new.next
+            p = p.next
         return dummy.next
         
 
