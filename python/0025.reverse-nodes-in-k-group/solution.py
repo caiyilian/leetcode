@@ -14,40 +14,44 @@ from leetgo_py import *
 #         self.next = next
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        if not (head and head.next and k != 1):
+        if k == 1:
             return head
+
+        def reverse_node(head):
+            result = None
+            p = head
+            while p:
+                next_node = p.next
+                p.next = result
+                result = p
+                p = next_node
+            return result, head  # 头和尾
+
         dummy = ListNode(0)
         dummy.next = head
-        p_prev = dummy
-        p_now_last = head
-        while p_now_last and p_now_last.next:
+        prev = dummy
+        """
+        需要有一个prev, p1, p_last, p_next
+        prev一开始就是dummy
+        """
+        while prev.next:
+            p1 = prev.next  # prev.next不能为None
+            p_last = p1
             for _ in range(k - 1):
-                if not (p_now_last and p_now_last.next):
-                    return dummy.next
-                p_now_last = p_now_last.next
-
-            p_next = p_now_last.next
-            p_now_last.next = None
-
-            p_prev.next, p_now_last = self.reverse_list(p_prev.next)
-            p_now_last.next = p_next
-
-            p_prev = p_now_last
-            p_now_last = p_next
+                p_last = p_last.next
+                if p_last is None:
+                    break
+            else:  # 没有发生break
+                p_next = p_last.next
+                # 把p_last的next设置为None
+                p_last.next = None
+                p1, p_last = reverse_node(p1)
+                prev.next = p1          # ★ 关键：prev 接反转后的新头
+                p_last.next = p_next    # 新尾接下一组
+                prev = p_last           # prev 前进到新尾
+                continue
+            break
         return dummy.next
-
-    def reverse_list(self, head):
-        if not (head and head.next):
-            return head
-        prev = None
-        curr = head
-        while curr:
-            nxt = curr.next
-            curr.next = prev
-            prev = curr
-            curr = nxt
-        # 返回 (反转后新头, 反转后新尾=原头)
-        return prev, head
         
 
 # @lc code=end
