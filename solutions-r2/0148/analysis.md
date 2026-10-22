@@ -62,7 +62,41 @@ def sortList(self, head):
 
 - 时间：O(n log n)
 - 空间：**递归版 O(log n)**（递归栈）——力扣进阶要求 O(1)，严格说不满足；
-- **进阶 O(1) 解法：自底向上归并**——从"1 个节点一组"开始两两合并、2 个一组、4 个一组……迭代完成，不用递归栈（一刷 `solutions/0148/` 有完整实现 + ⏰ 待看 B 站解析标记）。
+- **进阶 O(1) 解法：自底向上归并**——从"1 个节点一组"开始两两合并、2 个一组、4 个一组……迭代完成，不用递归栈。
+
+## 五点五、自底向上归并详解（O(1) 空间）
+
+**核心区别**：递归版"先切到底再拼上来"（空间 O(log n)），自底向上版"从一开始就拼、段长逐层翻倍"（纯迭代 O(1)）。
+
+```
+step=1:  [4] [2] [1] [3]     单节点天然有序
+         → merge 两两 → [2,4] [1,3]
+step=2:  [2,4] [1,3]
+         → merge → [1,2,3,4]
+step=4:  整链 1 段，完成
+```
+
+代码骨架：
+```python
+n = 数长度()
+dummy = ListNode(0, head)
+step = 1
+while step < n:                     # 段长 1,2,4,... 直到 >= n
+    prev, cur = dummy, dummy.next
+    while cur:
+        left = cur                  # 第一段
+        right = split(cur, step)    # 第二段（切出 step 个，断开）
+        cur = split(right, step)    # 剩余链头
+        prev.next = merge(left, right)
+        while prev.next:            # prev 移到合并结果末尾
+            prev = prev.next
+    step *= 2
+return dummy.next
+```
+
+两个灵魂细节：
+1. **`split` 里 `head.next = None`（断开）**——每切一段必须物理断开，否则 `merge` 顺着 next 并到整条链尾，把后面没处理的段卷进来；
+2. **`prev` 推进到合并结果末尾**——`prev` 是"已合并完部分"的尾巴，下一段结果要接到它后面，忽略就断链。
 
 ## 六、一刷 vs 二刷
 
