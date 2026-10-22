@@ -30,8 +30,11 @@ forward(哨兵头) ⇄ 最近使用 ⇄ ... ⇄ 最久未用 ⇄ backward(哨兵
 
 双向链表节点存的是 **value**（`ListNode2(value)`），但驱逐时要从 `hash_map` 里删 key——**val ≠ key**（`put(1,99)` 节点 val 是 99，key 是 1）。RE 版用 `hash_map.pop(delete_node.val)` 删错了键。
 
-修复：**反向映射 `hash_map2[node] = key`**，驱逐时 `hash_map.pop(hash_map2[delete_node])`。
-（更省的写法：节点加 `self.key` 字段，就不用 hash_map2 这张表——官方常见，面试可提。）
+**修复方案对比**：
+- ❌ 双哈希表：`hash_map2[node] = key` 反查（用户 AC 版用的，功能对但多一张表）；
+- ✅ **节点带 key 字段（标准）**：`ListNode2(value, key=key)`，驱逐时 `hash_map.pop(delete_node.key)`——一张表闭环，官方常见写法。
+
+**结论：LRU 标配 = 一个哈希表 + 双向链表，节点里存 key。**
 
 ## 五、get/put 的 O(1) 论证
 
