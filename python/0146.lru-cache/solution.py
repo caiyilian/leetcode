@@ -7,58 +7,81 @@ from leetgo_py import *
 
 # @lc code=begin
 
-class Node2dir:
-    def __init__(self, x: int, key=None, next=None, prev=None):
-        self.val = int(x)
+class ListNode2:
+    def __init__(self, val=0, next=None, before=None):
+        self.val = val
         self.next = next
-        self.prev = prev
-        self.key = key
+        self.before = before
 
 class LRUCache:
 
     def __init__(self, capacity: int):
-        self.cache_dict = {}
-        self.count = 0
         self.capacity = capacity
-        self.node_head = Node2dir(0)
-        self.node_tail = Node2dir(0, prev=self.node_head)
-        self.node_head.next = self.node_tail
+        self.forward = ListNode2()          # 哨兵头（next 指向最近使用）
+        self.backward = ListNode2()         # 哨兵尾（before 指向最久未用）
+        self.forward.next = self.backward
+        self.backward.before = self.forward
+        self.hash_map = {}
+        self.hash_map2 = {}                # node → key（驱逐时反向找 key）
+        self.count = 0
 
     def get(self, key: int) -> int:
-        if key not in self.cache_dict:
+        # 如果不在
+        if key not in self.hash_map:
             return -1
-        curr = self.to_head(key)
-        return curr.val
+        # 在的话，首先，更新一下顺序
+        node = self.hash_map[key]
+        before_node = node.before
+        next_node = node.next
+
+        before_node.next = next_node       # ① 摘除 node
+        next_node.before = before_node
+
+        node.before = self.forward         # ② 插到 forward 后（最新）
+        node.next = self.forward.next
+
+        self.forward.next.before = node
+        self.forward.next = node
+
+        return node.val
 
     def put(self, key: int, value: int) -> None:
-        if key not in self.cache_dict:
-            curr = Node2dir(value, key=key)
-            self.cache_dict[key] = curr
-            curr.next = self.node_head.next
-            curr.prev = self.node_head
-            self.node_head.next = curr
-            curr.next.prev = curr
-            self.count += 1
-            if self.count > self.capacity:
-                delete_key = self.node_tail.prev.key
-                self.node_tail.prev = self.node_tail.prev.prev
-                self.node_tail.prev.next = self.node_tail
-                del self.cache_dict[delete_key]
-                self.count -= 1
-        else:
-            self.cache_dict[key].val = value
-            self.to_head(key)
+        if key in self.hash_map:
+            node = self.hash_map[key]
+            node.val = value
+            # 移动到最开头
+            node = self.hash_map[key]
+            before_node = node.before
+            next_node = node.next
 
-    def to_head(self, key):
-        curr = self.cache_dict[key]
-        curr.prev.next = curr.next
-        curr.next.prev = curr.prev
-        curr.next = self.node_head.next
-        curr.prev = self.node_head
-        self.node_head.next = curr
-        curr.next.prev = curr
-        return curr
-        
+            before_node.next = next_node
+            next_node.before = before_node
+
+            node.before = self.forward
+            node.next = self.forward.next
+
+            self.forward.next.before = node
+            self.forward.next = node
+        else:
+            # 不在的话
+            node = ListNode2(value)
+            self.hash_map[key] = node
+            self.hash_map2[node] = key
+            node.before = self.forward
+            node.next = self.forward.next
+
+            self.forward.next.before = node
+            self.forward.next = node
+            if self.count == self.capacity:   # 超过阈值，提出最不常用的
+                delete_node = self.backward.before
+
+                delete_node.before.next = self.backward
+                self.backward.before = delete_node.before
+
+                self.hash_map.pop(self.hash_map2[delete_node])
+            else:
+                self.count += 1
+
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
