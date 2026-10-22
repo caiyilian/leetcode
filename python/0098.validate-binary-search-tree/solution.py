@@ -15,24 +15,20 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        """
-        中序遍历，就是左根右，如果上一个值大于当前值，就出错
-        """
-        last_list = [float('-inf')]
-        def fun(tree_root):
-            if tree_root:
-                left_bool = fun(tree_root.left)
-                if tree_root.val > last_list[0]:
-                    last_list[0] = tree_root.val
-                else:
+        # 左中右递增不就好了
+        last = [float('-inf')]
+
+        def fun(root):
+            if root:
+                if fun(root.left) is False:   # 左子树不合法 → 剪枝
                     return False
-                if left_bool is False:
+                if last[0] >= root.val:       # 中序必须严格递增（>= 判重复值）
                     return False
-                right_bool = fun(tree_root.right)
-                return right_bool
+                last[0] = root.val
+                return fun(root.right)
             return True
-        result = fun(root)
-        return result
+
+        return fun(root)
         
 
 # @lc code=end
