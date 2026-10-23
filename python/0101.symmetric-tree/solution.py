@@ -15,17 +15,21 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
-        if not root:
-            return True          # ⚡ 空树是 True（天然对称）
-        return self.fun(root.left, root.right)
+        """
+        一开始root.left.val == root.right.val
+        """
+        def fun(tree1, tree2):
+            if tree1 or tree2:
+                if (tree1 is None) or (tree2 is None) or (tree1.val != tree2.val):
+                    return False
+                result1 = fun(tree1.left, tree2.right)      # 左 ↔ 右
+                if result1 is False:
+                    return False
+                result2 = fun(tree1.right, tree2.left)      # 右 ↔ 左
+                return result2
+            return True
 
-    def fun(self, tree1, tree2):
-        if tree1 and tree2:
-            if tree1.val != tree2.val:
-                return False
-            # 交叉比较：左 vs 右、右 vs 左（镜像的定义）
-            return self.fun(tree1.left, tree2.right) and self.fun(tree1.right, tree2.left)
-        return tree1 is tree2    # 都 None → True；一个 None → False
+        return fun(root, root)      # ★ 空树也正确（fun(None,None) → True）
         
 
 # @lc code=end
