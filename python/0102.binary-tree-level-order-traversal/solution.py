@@ -13,21 +13,26 @@ from leetgo_py import *
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
+
+
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root:
             return []
         result = []
-        self.fun(root, result)
+        q = deque([root])
+        while q:
+            now = []
+            for _ in range(len(q)):        # ★ 按层快照：此刻队列里的就是这一层
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+                now.append(node.val)
+            result.append(now)
         return result
-
-    def fun(self, root, result, dep=1):
-        if root:
-            if len(result) < dep:
-                result.append([])        # 遇到更深的层，先建空列表
-            result[dep - 1].append(root.val)
-            self.fun(root.left, result, dep + 1)
-            self.fun(root.right, result, dep + 1)
         
 
 # @lc code=end
