@@ -15,16 +15,26 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
-        return self.fun(nums)
-
-    def fun(self, nums):
+        """
+        平衡：左右两个数深度相差不超过1
+        搜索树，左树全都小于当前节点
+        """
         if not nums:
             return None
-        middle_index = len(nums) // 2
-        root = TreeNode(nums[middle_index])
-        root.left = self.fun(nums[:middle_index])
-        root.right = self.fun(nums[middle_index + 1:])   # Python 切片越界自动截断，不会崩
-        return root
+        length = len(nums)
+
+        def fun(start, end):
+            middle = (end - start) // 2 + start      # 中点：左半比右半多0/1个 → 平衡
+            root = TreeNode(nums[middle])
+            left_num = middle - start
+            right_num = end - middle - 1
+            if left_num > 0:
+                root.left = fun(start, middle)
+            if right_num > 0:
+                root.right = fun(middle + 1, end)
+            return root
+
+        return fun(0, length)
         
 
 # @lc code=end
