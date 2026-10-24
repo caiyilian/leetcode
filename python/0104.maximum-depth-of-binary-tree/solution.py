@@ -13,11 +13,24 @@ from leetgo_py import *
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
+
+
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+        q = deque([root])
+        result = 0
+        while q:
+            for _ in range(len(q)):        # 按层快照：处理完一层 result+1
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            result += 1
+        return result
         
 
 # @lc code=end
