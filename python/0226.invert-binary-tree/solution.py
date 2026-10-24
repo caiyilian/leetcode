@@ -15,13 +15,15 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        return self.fun(root)
+        if not root:
+            return None
 
-    def fun(self, root):
-        if root:
-            # 元组赋值：右边先求值（先递归翻转两边），再交换左右
-            root.left, root.right = self.fun(root.right), self.fun(root.left)
-            return root
+        def fun(root):
+            if root:
+                root.left, root.right = fun(root.right), fun(root.left)  # 元组赋值交换
+                return root
+
+        fun(root)
         return root
         
 
