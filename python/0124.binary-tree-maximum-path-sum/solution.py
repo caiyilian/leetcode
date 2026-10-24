@@ -16,23 +16,21 @@ from leetgo_py import *
 class Solution:
     def maxPathSum(self, root: TreeNode | None) -> int:
         """
-        某个节点为根节点的最大路径：
-        自身、自身+左节点最大、自身+右节点最大
-        自身 + max(左节点最大,0) + max(右节点最大,0)
-        对于这个节点，能组成最大的，以及上报给父节点的不是同一个数
+        某一个节点，它的最大，等于左节点向上传的和右节点向上传的加上自身
+        然后它向上传的是自身加上非负的子节点
         """
-        max_list = [float("-inf")]
+        result = [float('-inf')]
+
         def fun(root):
             if root:
-                max_left = max(fun(root.left), 0)        # 左贡献（负数砍掉）
-                max_right = max(fun(root.right), 0)      # 右贡献（负数砍掉）
-                now_max = root.val + max_left + max_right      # 两腿：更新全局答案
-                to_father = root.val + max(max_left, max_right)  # 单腿：喂父节点
-                max_list[0] = max(max_list[0], now_max)
-                return to_father
+                left_max = max(fun(root.left), 0)     # 左单腿贡献（负数不选 → 0）
+                right_max = max(fun(root.right), 0)   # 右单腿贡献
+                result[0] = max(result[0], root.val + left_max + right_max)  # 两腿=过根路径
+                return root.val + max(left_max, right_max)  # 单腿喂父
             return 0
+
         fun(root)
-        return max_list[0]
+        return result[0]
         
 
 # @lc code=end
