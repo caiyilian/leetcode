@@ -17,24 +17,28 @@ class Solution:
     def flatten(self, root: Optional[TreeNode]) -> None:
         """
         Do not return anything, modify root in-place instead.
+        先把左树搞定，返回左头尾两个指针
+        然后搞定右，返回右头尾
+        如果左头是None，那就直接合格了，返回根和右尾
+        否则，把右头接入左尾巴，然后把左头接入根节点的右
+        然后return根和右尾
+        如果是叶子节点，那么返回的两个都是本身
         """
-        while root:
-            if root.left:
-                # 找到左子树展开后的链尾（前序遍历最后一个节点）
-                max_right = self.find_max_right(root.left)[0]
-                max_right.right = root.right   # 原右子树接到左链尾后面
-                root.right = root.left          # 左子树整体搬到右边
-                root.left = None                # 清空左指针
-            root = root.right
+        def fun(root):
+            if root:
+                root.left, left_last = fun(root.left)
+                root.right, right_last = fun(root.right)
+                if root.left:
+                    left_last.right = root.right
+                    root.right = root.left
+                    root.left = None
+                    if right_last is None:        # ★ 修复：右子树为空时，链尾=左链尾
+                        right_last = left_last
+                return root, right_last if (right_last is not None) else root
+            return None, None
 
-    def find_max_right(self, root, result=[None]):
-        """找左子树展开后的链尾（递归遍历整棵子树，功能正确但 O(子树大小)）"""
-        if root:
-            result[0] = root
-            if not root.right:
-                self.find_max_right(root.left)
-            self.find_max_right(root.right)
-            return result
+        fun(root)
+        return root
         
 
 # @lc code=end
