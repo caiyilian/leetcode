@@ -15,24 +15,26 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        length1 = len(preorder)
+        length2 = len(inorder)
         """
-        前序是：根左右；中序是：左根右
-        前序给"根是谁"，中序给"根的左右各有几个"
+        输入[3,9,20,15,7],[9,3,15,20,7]，得到，root是3，
+        left的先序和中序都是[9]，右的先序是[20,15,7]，中序是[15,20,8]
         """
-        index_dict = {i: v for v, i in enumerate(inorder)}   # 值 → 中序索引（O(1) 定位）
-        length = len(preorder)
-        # 前两个用于前序，后两个用于中序
-        left1, right1, left2, right2 = 0, length-1, 0, length-1
-        def fun(left1, right1, left2, right2):
-            if left1 > right1:
-                return None
-            root = TreeNode(preorder[left1])          # 前序第一个 = 根
-            index = index_dict[preorder[left1]]       # 根在中序的索引
-            left_count = index - left2                # 左子树节点数（中序里根左边有几个）
-            root.left = fun(left1+1, left1+left_count, left2, index-1)
-            root.right = fun(left1+left_count+1, right1, index+1, right2)
+        def fun(l1, r1, l2, r2):
+            root_val = preorder[l1]
+            index_root_inorder = inorder.index(root_val)   # O(n) 找根在中序的位置
+            root = TreeNode(root_val)
+            left_num = index_root_inorder - l2             # 左子树节点数
+            right_num = r2 - index_root_inorder - 1        # 右子树节点数
+            if left_num:
+                root.left = fun(l1 + 1, l1 + 1 + left_num, l2, index_root_inorder)
+            if right_num:
+                root.right = fun(l1 + 1 + left_num, r1, index_root_inorder + 1, r2)
             return root
-        return fun(left1, right1, left2, right2)
+
+        result = fun(0, length1, 0, length2)
+        return result
         
 
 # @lc code=end
