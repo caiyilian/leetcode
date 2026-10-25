@@ -15,15 +15,14 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        # 反中序遍历（右→根→左 = 降序）+ 累加
-        # 累加和 = 所有 ≥ 当前节点的值之和 → 正好是累加树定义
-        sums = [0]               # 用列表引用，嵌套函数才能原地改（闭包陷阱）
+        acc = [0]                  # 已累加的"更大值"总和（闭包共享）
+
         def fun(root):
             if root:
-                fun(root.right)       # 右（大的）先
-                root.val += sums[0]   # 加上已累加的所有更大值
-                sums[0] = root.val    # 更新累加器
-                fun(root.left)        # 左（小的）后
+                fun(root.right)    # 反中序：先右（更大的）
+                acc[0] += root.val
+                root.val = acc[0]  # 当前值 = 累计和（含自己）
+                fun(root.left)     # 再左（更小的）
         fun(root)
         return root
         
