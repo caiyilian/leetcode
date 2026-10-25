@@ -17,49 +17,31 @@ from leetgo_py import *
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         """
-        BFS 记录父节点映射 + 深度对齐 + 同步上溯（160 相交链表思路的树版本）
-        剪枝：找到 p/q 就 break（father_dict 只需祖先链，BFS 层序保证祖先已记录）
+        左树有，右树也有，那么当前节点就是其中一个祖先节点
+        如果其中一个树有，另一个树没有，但是当前节点是其中一个，那么祖先节点就是当前节点
+        如果两个树都没有，返回False
         """
-        from collections import deque
-        que = deque([root])
-        father_dict = {}
-        depth = 0
-        deep_p = None
-        deep_q = None
-        while que:
-            for _ in range(len(que)):
-                node = que.popleft()
-                if node == p:
-                    deep_p = depth
-                    if deep_q is not None:
-                        break
-                if node == q:
-                    deep_q = depth
-                    if deep_p is not None:
-                        break
-                if node.left:
-                    father_dict[node.left] = node
-                    que.append(node.left)
-                if node.right:
-                    father_dict[node.right] = node
-                    que.append(node.right)
-            else:
-                depth += 1
-                continue
-            break
-        # 深度对齐（深的先上溯到同一层）
-        if deep_p > deep_q:
-            for _ in range(deep_p - deep_q):
-                p = father_dict[p]
-        else:
-            for _ in range(deep_q - deep_p):
-                q = father_dict[q]
-        # 同步上溯直到相遇 = 最近公共祖先
-        while p != q:
-            p = father_dict[p]
-            q = father_dict[q]
-        return p
-        
+        result = [None]
+
+        def fun(root):
+            if root:
+                result_left = fun(root.left)
+                result_right = fun(root.right)
+                return_result = result_left + result_right
+                if return_result == 2:                  # 左右子树各找到 p/q → 当前是 LCA
+                    if result[0] is None:
+                        result[0] = root
+                else:                                   # 只有一侧找到
+                    if (root is p) or (root is q):      # 自己是另一个目标
+                        return_result += 1
+                        if return_result == 2:
+                            result[0] = root
+                return return_result
+            return 0
+
+        fun(root)
+        return result[0]
+
 
 # @lc code=end
 
