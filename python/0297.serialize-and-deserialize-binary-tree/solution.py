@@ -22,16 +22,19 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
+        if not root:
+            return ""
         result = []
-        def fun(root):
-            if root:
-                result.append(str(root.val) + ",")
-                fun(root.left)
-                fun(root.right)
-            else:
-                result.append("N,")
-        fun(root)
-        return "".join(result)[:-1]          # 先 join 再去末尾逗号
+        q = deque([root])
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+                result.append(str(node.val if node else None))
+                if node is None:
+                    continue
+                q.append(node.left)
+                q.append(node.right)
+        return ",".join(result)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -39,16 +42,27 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        data_list = data.split(",")
-        length = len(data_list)
-        def fun(index):
-            if index > length - 1 or data_list[index] == 'N':
-                return None, index             # 返回"最后处理的位置"
-            root = TreeNode(int(data_list[index]))
-            root.left, index = fun(index + 1)   # 左子树从下一个位置
-            root.right, index = fun(index + 1)  # 右子树从"左子树最后位置 + 1"
-            return root, index
-        root, _ = fun(0)
+        if not data:
+            return None
+        data = data.split(",")
+        root = TreeNode(int(data[0]))
+        q = deque([root])       # 队列存"等着接孩子的父节点"
+        i = 0
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+                i += 1
+                left = data[i]              # 消费左孩子
+                if left != 'None':
+                    left = TreeNode(int(left))
+                    node.left = left
+                    q.append(left)          # 左孩子也要当父 → 入队
+                i += 1
+                right = data[i]             # 消费右孩子
+                if right != 'None':
+                    right = TreeNode(int(right))
+                    node.right = right
+                    q.append(right)
         return root
 
 # Your Codec object will be instantiated and called as such:
