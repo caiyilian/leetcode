@@ -15,20 +15,23 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        max_list = [0]
-        self.fun(root, max_list)
-        return max_list[0]
+        """
+        每一个树的最长，等于左树上传+右树上传
+        而这个树的最长，与上传，是不同的，
+        上传只取最长的那颗树加1
+        """
+        result = [0]               # 全局答案：最长路径边数
 
-    def fun(self, root, max_list):
-        if root:
-            left_dep = self.fun(root.left, max_list)
-            right_dep = self.fun(root.right, max_list)
-            # 职责①：两腿相加 = 经过当前节点的直径，更新全局答案
-            max_list[0] = max(left_dep + right_dep, max_list[0])
-            # 职责②：返回单腿深度（供父节点继续往上拼）——返回值 ≠ 答案！
-            return max(left_dep, right_dep) + 1
-        # 是 None，深度 0
-        return 0
+        def fun(root):
+            if root:
+                left = fun(root.left)
+                right = fun(root.right)
+                result[0] = max(result[0], left + right)   # 两腿：过当前节点的路径 = 左链+右链
+                return max(left, right) + 1                # 单腿：喂父节点（最长单链高度）
+            return 0
+
+        fun(root)
+        return result[0]
         
 
 # @lc code=end
