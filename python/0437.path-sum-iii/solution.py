@@ -15,19 +15,20 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
-        self.count = 0
-        prefix = {0: 1}                      # ① 虚拟起点：前缀和为 0 出现 1 次
-        def dfs(node, cur_sum):
-            if not node:
-                return
-            cur_sum += node.val              # ② 当前前缀和 = 根到本节点的路径和
-            self.count += prefix.get(cur_sum - targetSum, 0)   # ③ 查差：找"前缀和=cur_sum-targetSum"的祖先
-            prefix[cur_sum] = prefix.get(cur_sum, 0) + 1       # ④ 记录当前前缀和
-            dfs(node.left, cur_sum)
-            dfs(node.right, cur_sum)
-            prefix[cur_sum] -= 1             # ⑤ 回溯撤销（防止跨子树——关键！）
-        dfs(root, 0)
-        return self.count
+        result = [0]
+        hash_map = {0: 1}            # 前缀和 → 出现次数；{0:1} 虚拟起点（路径可从根开始）
+
+        def fun(root, acc=0):
+            if root:
+                acc += root.val                              # 当前前缀和
+                result[0] += hash_map.get(acc - targetSum, 0)  # 查差值：有几个起点凑出 targetSum
+                hash_map[acc] = hash_map.get(acc, 0) + 1     # 记录当前前缀和
+                fun(root.left, acc)
+                fun(root.right, acc)
+                hash_map[acc] -= 1                           # ★ 回溯撤销（防跨子树）
+
+        fun(root)
+        return result[0]
         
 
 # @lc code=end
