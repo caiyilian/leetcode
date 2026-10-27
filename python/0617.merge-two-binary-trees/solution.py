@@ -15,20 +15,25 @@ from leetgo_py import *
 #         self.right = right
 class Solution:
     def mergeTrees(self, root1: TreeNode | None, root2: TreeNode | None) -> TreeNode | None:
-        # 原地合并到 root1，三种情况：
-        # ① 都不为 None：值相加，递归合并左右子树
-        # ② 只有 root2：直接采用 root2
-        # ③ 只有 root1：保持 root1（return root1）
+        """
+        统一加到root1
+        如果两个都有的节点，相加
+        如果左是None，右有节点，把右接入左，然后不用继续往下走
+        如果左不是None，右是，那就不用继续往下走
+        """
+        if not root1:
+            return root2
+
         def fun(root1, root2):
-            if root1 and root2:                # 都不为 None
+            if root1 and root2:
                 root1.val += root2.val
                 root1.left = fun(root1.left, root2.left)
                 root1.right = fun(root1.right, root2.right)
-            elif root2:                        # root2 不为 None，root1 为 None
-                root1 = root2
-            return root1
+                return root1
+            else:
+                return root1 if root1 else root2
 
-        root1 = fun(root1, root2)              # ★ 必须接住返回值（内部 root1=root2 是局部绑定）
+        root1 = fun(root1, root2)
         return root1
         
 
