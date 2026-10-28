@@ -10,21 +10,23 @@ from leetgo_py import *
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         m, n = len(grid), len(grid[0])
-        def land2water_single(i, j):
-            if i < 0 or i >= m or j < 0 or j >= n or grid[i][j] == '0':
-                return                      # 越界或水 → 停
-            grid[i][j] = '0'                # 沉没：先标记再递归（防死循环）
-            land2water_single(i+1, j)       # 四方向扩散
-            land2water_single(i-1, j)
-            land2water_single(i, j+1)
-            land2water_single(i, j-1)
-        count = 0
+        result = 0
+
+        def fun(i, j):
+            if i < 0 or j < 0 or i >= m or j >= n or grid[i][j] == '0':
+                return
+            grid[i][j] = '0'          # ★ 原地置 0（淹没），防重复计数
+            fun(i-1, j)               # 上
+            fun(i+1, j)               # 下
+            fun(i, j-1)               # 左
+            fun(i, j+1)               # 右
+
         for i in range(m):
             for j in range(n):
-                if grid[i][j] == '1':       # 发现新大陆
-                    count += 1
-                    land2water_single(i, j) # 淹掉整片相连的 '1'
-        return count
+                if grid[i][j] == '1':
+                    fun(i, j)         # 淹没整座岛
+                    result += 1
+        return result
         
 
 # @lc code=end
