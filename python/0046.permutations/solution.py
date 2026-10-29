@@ -9,20 +9,26 @@ from leetgo_py import *
 
 class Solution:
     def permute(self, nums: list[int]) -> list[list[int]]:
-        length = len(nums)
+        if not nums:
+            return []
         result = []
-        def fun(path):
+        length = len(nums)
+
+        def fun(path, exist):
             if len(path) == length:
-                # 如果不复制的话，后面 path.pop，也会影响到 result 的列表，因为就类似指针
-                result.append(path.copy())
-                return
-            for n in nums:
-                if n in path:      # 已用过的数字不能再选
-                    continue
-                path.append(n)     # ① 选
-                fun(path)          # ② 递归
-                path.pop()         # ③ 撤销（回溯的灵魂）
-        fun([])
+                result.append(path.copy())          # ★ copy：path 共享引用
+                return path
+            for n in nums:                          # ⚡ 每次都从全部数里选（回头）
+                if n in exist:
+                    continue                        # 已用过 → 跳过
+                exist.add(n)                        # 选
+                path.append(n)
+                path = fun(path, exist)             # 递归
+                path.pop()                          # 撤销
+                exist.remove(n)
+            return path
+
+        fun([], set())
         return result
         
 
