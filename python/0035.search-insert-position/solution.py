@@ -10,20 +10,17 @@ from leetgo_py import *
 class Solution:
     def searchInsert(self, nums: list[int], target: int) -> int:
         length = len(nums)
-        left, right = 0, length
-        while left < right:
-            middle = (right + left) // 2
-            if nums[middle] == target:
-                return middle
-            if nums[middle] > target:
-                if right == middle:
-                    return right - 1
-                right = middle
+        left = 0
+        right = length - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return mid
+            if nums[mid] > target:
+                right = mid - 1
             else:
-                if left == middle:
-                    return left + 1
-                left = middle
-        return 0
+                left = mid + 1
+        return left                 # ★ 退出时 left 就是插入位置
         
 
 # @lc code=end
