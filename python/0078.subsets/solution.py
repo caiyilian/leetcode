@@ -9,22 +9,20 @@ from leetgo_py import *
 
 class Solution:
     def subsets(self, nums: list[int]) -> list[list[int]]:
+        result = [[]]                    # 空集
         length = len(nums)
-        result = [[]]
-        def fun(path):
-            if len(path) == length:
-                return
-            for n in nums:
-                if n in path:
-                    continue
-                # 如果path是空，那就直接加，如果path不是空，加进去的必须是大于列表最后一个值
-                if len(path) >= 1 and path[-1] > n:
-                    continue
+
+        def fun(path, start):
+            if len(path) == length:      # 满长度结束（边界保护）
+                return path
+            for i, n in enumerate(nums[start:]):
                 path.append(n)
-                result.append(path.copy())
-                fun(path)
+                result.append(path.copy())     # ★ 每进入一个节点就收集（子集=所有路径）
+                path = fun(path, start + i + 1)  # 不回头
                 path.pop()
-        fun([])
+            return path
+
+        fun([], 0)
         return result
         
 
