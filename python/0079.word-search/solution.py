@@ -11,30 +11,32 @@ class Solution:
     def exist(self, board: list[list[str]], word: str) -> bool:
         m, n = len(board), len(board[0])
         length = len(word)
-        def fun(i, j, index):
-            if index == length:                    # ① 匹配完整个单词 → 成功（必须放最前！）
-                return True
-            if i < 0 or j < 0 or i >= m or j >= n: # ② 越界 → 这条路走不通
+
+        def fun(index, i, j):
+            if i < 0 or j < 0 or i >= m or j >= n:
                 return False
-            if board[i][j] != word[index]:         # ③ 字符不符 → 失败
+            if board[i][j] != word[index]:
                 return False
-            ori = board[i][j]
-            board[i][j] = ""                       # ④ 标记访问（防止重复踩到）
-            if fun(i+1, j, index+1):
+            if index == length - 1:      # ★ 当前格已匹配到最后一位 → 直接成功
                 return True
-            if fun(i-1, j, index+1):
+
+            c = board[i][j]              # 备份（★ 别写错下标！）
+            board[i][j] = '0'            # 标记已用（防回头）
+            if fun(index + 1, i - 1, j):
                 return True
-            if fun(i, j+1, index+1):
+            if fun(index + 1, i, j - 1):
                 return True
-            if fun(i, j-1, index+1):
+            if fun(index + 1, i + 1, j):
                 return True
-            board[i][j] = ori                      # ⑤ 撤销（回溯）
-            return False                           # ⑥ 四方向都失败 → False
+            if fun(index + 1, i, j + 1):
+                return True
+            board[i][j] = c              # 恢复
+            return False
+
         for i in range(m):
             for j in range(n):
                 if board[i][j] == word[0]:
-                    reb = fun(i, j, index=0)
-                    if reb:
+                    if fun(0, i, j):
                         return True
         return False
         
