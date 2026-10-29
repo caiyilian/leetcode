@@ -7,9 +7,11 @@ from leetgo_py import *
 
 # @lc code=begin
 
-def is_palindrome(s):
-    p1, p2 = 0, len(s) - 1
-    while p2 >= p1:
+def isPa(s):
+    length = len(s)
+    p1 = 0
+    p2 = length - 1
+    while p1 < p2:
         if s[p1] != s[p2]:
             return False
         p1 += 1
@@ -19,18 +21,23 @@ def is_palindrome(s):
 
 class Solution:
     def partition(self, s: str) -> list[list[str]]:
-        length = len(s)
+        if not s:
+            return []
         result = []
-        def fun(path, index):
-            if index == length:                # 切完整个字符串 → 记录（基线按目标进度）
+        length = len(s)
+
+        def fun(path, start=0):
+            if start >= length:                    # 切完整个串 → 收集
                 result.append(path.copy())
-                return
-            for i in range(index + 1, length + 1):   # 穷举切割终点
-                if is_palindrome(s[index:i]):        # 这段是回文才切
-                    path.append(s[index:i])
-                    fun(path, i)                     # 从切割点继续
+                return path
+            for i in range(start, length):
+                if isPa(s[start:i + 1]):           # 子串是回文才切
+                    path.append(s[start:i + 1])
+                    path = fun(path, i + 1)        # 从切割点后继续
                     path.pop()
-        fun([], 0)
+            return path
+
+        fun([])
         return result
         
 
