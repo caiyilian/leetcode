@@ -9,28 +9,36 @@ from leetgo_py import *
 
 class Solution:
     def solveNQueens(self, n: int) -> list[list[str]]:
+        """
+        按行摆放
+        首先，不在同一列就是j不相同
+        不在对角线
+        斜率为正的对角线：i j, i-1,j+1 所以就是 i+j 不变
+        斜率为负的对角线：i j, i-j 不变
+        """
+        ban_j = set()      # 已占用的列
+        ban_ipj = set()    # 已占用的副对角线（i+j 恒定）
+        ban_idj = set()    # 已占用的主对角线（i-j 恒定）
         result = []
-        # 预生成每列对应的行字符串（"."*j + "Q" + "."*(n-j-1)），避免每次拼接
-        temp = ["." * num + "Q" + "." * (n - num - 1) for num in range(n)]
 
-        def fun(path, i, col, diag1, diag2):
-            if i == n:                    # 放满 n 行（每行一个皇后，天然不同行）
+        def fun(path, i=0):
+            if len(path) == n:
                 result.append(path.copy())
                 return
             for j in range(n):
-                # 列冲突 / 两条对角线冲突（同一斜线 i+j 或 i-j 相等）
-                if j not in col and (i + j) not in diag1 and (i - j) not in diag2:
-                    path.append(temp[j])
-                    col.add(j)
-                    diag1.add(i + j)      # ↘ 对角线编号
-                    diag2.add(i - j)      # ↙ 对角线编号
-                    fun(path, i + 1, col, diag1, diag2)
-                    path.pop()
-                    col.remove(j)         # 回溯撤销三集合
-                    diag1.remove(i + j)
-                    diag2.remove(i - j)
+                if (j in ban_j) or (i - j in ban_idj) or (i + j in ban_ipj):
+                    continue
+                ban_j.add(j)
+                ban_ipj.add(i + j)
+                ban_idj.add(i - j)
+                path.append("." * j + "Q" + "." * (n - j - 1))
+                fun(path, i + 1)
+                ban_j.remove(j)
+                ban_ipj.remove(i + j)
+                ban_idj.remove(i - j)
+                path.pop()
 
-        fun([], 0, set(), set(), set())
+        fun([])
         return result
         
 
