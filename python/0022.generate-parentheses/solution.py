@@ -10,25 +10,28 @@ from leetgo_py import *
 class Solution:
     def generateParenthesis(self, n: int) -> list[str]:
         """
-        对于一个节点
-        如果是左括号，那么往下走可以是左也可以是右，但是左的数量必须小于n才能继续左
-        如果是右括号，那么往下走，可以是右括号，也可以左括号
-        但是，继续右括号的条件是，之前的的左括号，还存在至少1个没有匹配的右括号
+        加右括号的条件是，之前左括号数量大于右括号数量
+        加左括号的条件是，之前的左括号数量小于n
         """
+        if n == 0:
+            return []
         result = []
-        def fun(path, left, right):
-            if len(path) == 2*n:
+
+        def fun(path, num_left=0):
+            if len(path) == 2 * n:
                 result.append("".join(path))
-                return
-            if left < n:            # 左括号数没满 → 能放 (
-                path.append("(")
-                fun(path, left+1, right)
-                path.pop()
-            if left > right:        # 还有未匹配的左括号 → 能放 )
+                return path
+            if len(path) - num_left < num_left:   # 右括号数 < 左括号数 → 可加右
                 path.append(")")
-                fun(path, left, right+1)
+                path = fun(path, num_left)
                 path.pop()
-        fun([], 0, 0)
+            if num_left < n:                       # 左括号数 < n → 可加左
+                path.append("(")
+                path = fun(path, num_left + 1)
+                path.pop()
+            return path
+
+        fun([])
         return result
         
 
