@@ -7,40 +7,47 @@ from leetgo_py import *
 
 # @lc code=begin
 
-class WordNode:
-    def __init__(self):
-        self.children = {}      # 字符 → 子节点（普通 dict + 显式判断，最稳）
-        self.is_end = False     # 是否是一个完整单词的结尾
+class MyNode:
+    def __init__(self, is_end=False):
+        self.next = {}        # ⚡ 必须函数体内新建（不能用默认参数 next={}！）
+        self.is_end = is_end
 
 
 class Trie:
 
     def __init__(self):
-        self.root = WordNode()
+        self.head = MyNode()
 
     def insert(self, word: str) -> None:
-        p = self.root
+        p = self.head
         for c in word:
-            if c not in p.children:        # 没有这个字母，就新建节点
-                p.children[c] = WordNode()
-            p = p.children[c]
-        p.is_end = True                    # 结尾标记
+            if c not in p.next:
+                p.next[c] = MyNode()
+            p = p.next[c]
+        p.is_end = True
 
     def search(self, word: str) -> bool:
-        p = self.root
+        p = self.head
         for c in word:
-            if c not in p.children:
-                return False
-            p = p.children[c]
-        return p.is_end                    # 要求"完整单词"（208 唯一坑）
+            if c in p.next:
+                p = p.next[c]
+            else:
+                break
+        else:
+            # 没有break，看看有没有is_end（存了apple但找app → False）
+            return p.is_end
+        return False          # 存了app但找apple → False
 
     def startsWith(self, prefix: str) -> bool:
-        p = self.root
+        p = self.head
         for c in prefix:
-            if c not in p.children:
-                return False
-            p = p.children[c]
-        return True                        # 只要求"链走得通"
+            if c in p.next:
+                p = p.next[c]
+            else:
+                break
+        else:
+            return True
+        return False
 
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
