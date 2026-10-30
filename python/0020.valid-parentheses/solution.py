@@ -9,35 +9,19 @@ from leetgo_py import *
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        List = [None, s[0]]
-        pair_dict = {
-            ")":"(",
-            "}":"{",
-            "]":"["
+        hash_map = {
+            "(": ")",
+            "{": "}",
+            "[": "]"
         }
-        for c in s[1:]:
-            # 列表里面没有东西了，表示这个是新的东西
-            if List[-1] is None:
-                if pair_dict.get(c, ""):
-                    # 如果这个新入栈的是一个右括号，那必定是出错
-                    return False
-                List.append(c)
-                continue
-            # 并且当前符号是右括号
-            if pair_dict.get(c, ""):
-                # 如果是对应的左括号，就出栈
-                if pair_dict[c] == List[-1]:
-                    List.pop(-1)
-                    continue
-                # 否则，就出错
-                return False
-            # 当前符号是新增的左括号
-            List.append(c)
-            
-            
-        if List[-1] is None:
-            return True
-        return False
+        stack = []
+        for c in s:
+            if c in hash_map:              # 左括号 → 压栈
+                stack.append(c)
+            else:                          # 右括号 → 弹栈比对
+                if not stack or hash_map[stack.pop()] != c:
+                    return False           # ★ 先查空栈（or 短路），再 pop
+        return not stack                   # 栈空 = 全部匹配
         
 
 # @lc code=end
