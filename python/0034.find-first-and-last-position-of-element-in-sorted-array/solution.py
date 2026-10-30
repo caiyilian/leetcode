@@ -10,28 +10,41 @@ from leetgo_py import *
 class Solution:
     def searchRange(self, nums: list[int], target: int) -> list[int]:
         length = len(nums)
-        if not nums:
-            return [-1, -1]
         left, right = 0, length - 1
-        while left < right:                     # 第一次二分：找第一个 >= target
-            middle = (left + right) // 2
-            if nums[middle] >= target:
-                right = middle
+        while left <= right:                     # ① 确认存在
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                break
+            if nums[mid] < target:
+                left = mid + 1
             else:
-                left = middle + 1
-        if nums[left] != target:                # 不存在
-            return [-1, -1]
-        min_val = left
+                right = mid - 1
+        else:
+            return [-1, -1]                      # 不存在
+
+        # ② 左边界：找第一个 >= target（假想 target-0.5 的插入位置）
+        left, right = 0, length - 1
+        target1 = target - 0.5
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] < target1:
+                left = mid + 1
+            else:
+                right = mid - 1
+        start = left
+
+        # ③ 右边界：找第一个 > target（假想 target+0.5 的插入位置）
         right = length - 1
-        while left < right:                     # 第二次二分：找第一个 >= target+1
-            middle = (left + right) // 2
-            if nums[middle] >= target + 1:
-                right = middle
+        target2 = target + 0.5
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] < target2:
+                left = mid + 1
             else:
-                left = middle + 1
-        # 补丁（闭区间二分找不到时 left 卡在 length-1）：
-        # target 是最大值 → 右边界 = left；否则 = left - 1
-        return [min_val, left if nums[-1] == target else (left - 1)]
+                right = mid - 1
+        end = left
+
+        return [start, end - 1]                  # end 是第一个 > target 的 → -1
         
 
 # @lc code=end
