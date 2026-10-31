@@ -9,18 +9,14 @@ from leetgo_py import *
 
 class Solution:
     def maxProfit(self, prices: list[int]) -> int:
-        # 一次遍历：维护历史最低价 min_val，每天算"今天卖 - 历史最低买"的利润
-        length = len(prices)
-        all_min = 0                       # 其实是"最大利润"（用户命名）
-        min_val, max_val = prices[0], prices[0]
-        for p in prices[1:]:
-            if p < min_val:               # 出现更低的买入点
-                min_val = p
-                max_val = p
-            elif p > max_val:             # 出现更高的卖出点
-                max_val = p
-                all_min = max(all_min, p - min_val)
-        return all_min
+        min_val = prices[0]          # 历史最低买入价
+        result = 0                   # 最大利润
+        for i in range(1, len(prices)):
+            if prices[i] < min_val:
+                min_val = prices[i]  # 更优买入点
+            else:
+                result = max(prices[i] - min_val, result)
+        return result
         
 
 # @lc code=end
