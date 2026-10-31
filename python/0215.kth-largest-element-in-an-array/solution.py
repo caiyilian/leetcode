@@ -9,27 +9,14 @@ from leetgo_py import *
 
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        # 快速选择（三路分区版，用户自写）：随机 pivot，分 >/==/< 三路，只递归一边
-        from random import choice
-
-        def fast_choose(nums, k):
-            pivot = choice(nums)                    # 随机化防退化
-            left, middle, right = [], [], []        # > pivot / == pivot / < pivot
-            for n in nums:
-                if n > pivot:
-                    left.append(n)
-                elif n < pivot:
-                    right.append(n)
-                else:
-                    middle.append(n)
-            if len(left) >= k:                      # 第 k 大在 left（>pivot 的那堆）
-                return fast_choose(left, k)
-            elif len(left) + len(middle) >= k:      # 第 k 大恰好 == pivot
-                return pivot
-            else:                                   # 第 k 大在 right（<pivot 的那堆）
-                return fast_choose(right, k - len(left) - len(middle))
-
-        return fast_choose(nums, k)
+        import heapq
+        length = len(nums)
+        heap = nums[:k]                # 前 k 个建堆（最小堆）
+        heapq.heapify(heap)
+        for i in range(k, length):
+            if nums[i] > heap[0]:      # 比堆顶（当前第 K 大）大才替换
+                heapq.heappushpop(heap, nums[i])
+        return heap[0]                 # 堆顶 = 第 K 大
         
 
 # @lc code=end
