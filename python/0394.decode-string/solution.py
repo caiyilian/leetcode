@@ -9,37 +9,30 @@ from leetgo_py import *
 
 class Solution:
     def decodeString(self, s: str) -> str:
-        """
-        一个函数，处理字符串
-        如果是普通字符，就加到列表里面
-        如果是数字，就提取数字，直到左括号[，就可以知道数字是多少
-        然后遇到[也是正常加入栈
-        但是遇到]就得开始逐个pop，直到[
-        单栈混合版：数字串 / 字母 / "[" 全存一个栈
-        """
-        result = []
-        c26 = set(chr(i + 97) for i in range(26))
-        number = set(str(i) for i in range(10))
-        num_str = ""
-        for i, c in enumerate(s):
-            if c in c26:
-                result.append(c)
-            elif c in number:
-                num_str += c
-            elif c == '[':
-                result.append(num_str)
-                result.append("[")
-                num_str = ""
-            else:  # 那就是 ]，一直 pop 到 [
+        stack = []
+        length = len(s)
+        i = 0
+        while i < length:
+            if s[i].isdigit():
+                num = []
+                while i < length and s[i].isdigit():
+                    num.append(s[i])
+                    i += 1
+                num = int("".join(num))
+                stack.append(num)
+                stack.append(s[i])                     # 加上 '['
+            elif s[i] == ']':                          # 验收一块
                 each_str = ""
-                while True:
-                    c2 = result.pop()
-                    if c2 == "[":
-                        break
-                    each_str = c2 + each_str
-                each_str = each_str * int(result.pop())
-                result.append(each_str)
-        return "".join(result)
+                while stack[-1] != "[":                # 弹出到分块起点
+                    c = stack.pop()
+                    each_str = c + each_str
+                stack.pop()                            # 去掉 '['
+                num = stack.pop()                      # 弹出重复次数
+                stack.append(num * each_str)           # 乘回压栈
+            else:                                      # 字母
+                stack.append(s[i])
+            i += 1
+        return "".join(stack)
         
 
 # @lc code=end
