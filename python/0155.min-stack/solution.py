@@ -11,21 +11,27 @@ class MinStack:
 
     def __init__(self):
         self.stack = []
-        self.time_min_val = [float('inf')]     # 辅助栈：第 i 层 = 主栈前 i 层的最小值；inf 哨兵免判空
+        self.min_stack = []        # 只存遇到过的最小值在 stack 中的索引
 
     def push(self, value: int) -> None:
         self.stack.append(value)
-        self.time_min_val.append(min(value, self.time_min_val[-1]))   # 新最小 = min(旧最小, value)
+        if not self.min_stack:
+            self.min_stack.append(len(self.stack) - 1)
+        else:
+            if value < self.stack[self.min_stack[-1]]:
+                self.min_stack.append(len(self.stack) - 1)
 
     def pop(self) -> None:
         self.stack.pop()
-        self.time_min_val.pop()                # 同步弹出（回到上一时刻的最小值）
+        pop_index = len(self.stack)          # 弹出后 stack 的新长度 = 被弹出元素的原下标
+        if self.min_stack[-1] == pop_index:  # 弹掉的恰好是当前最小值的索引 → 辅助栈同步弹
+            self.min_stack.pop()
 
     def top(self) -> int:
         return self.stack[-1]
 
     def getMin(self) -> int:
-        return self.time_min_val[-1]           # O(1) 直接看辅助栈顶
+        return self.stack[self.min_stack[-1]]
 
 # Your MinStack object will be instantiated and called as such:
 # obj = MinStack()
