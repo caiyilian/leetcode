@@ -9,19 +9,12 @@ from leetgo_py import *
 
 class Solution:
     def canJump(self, nums: list[int]) -> bool:
-        if len(nums) == 1:
-            return True
-        if nums[0] == 0:
-            return False
-        nums.pop()                       # 去掉终点（最后一个元素）
-        last_max = float("-inf")
-        last_index = -1
-        for i, num in enumerate(nums):
-            if num == 0 and last_max - i + last_index == 0:   # 跳不过去的坑
+        far = 0
+        length = len(nums)
+        for i in range(length - 1):          # ⚡ 只到 length-1（末尾 0 不算死路）
+            if far == i and nums[i] == 0:    # 当前位置无法越过 → 死路
                 return False
-            if (num >= last_max) or (num + (i - last_index) > last_max):
-                last_max = num
-                last_index = i
+            far = max(far, i + nums[i])
         return True
         
 
