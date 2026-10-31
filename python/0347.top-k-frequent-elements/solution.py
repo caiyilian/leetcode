@@ -11,26 +11,20 @@ import heapq
 
 class Solution:
     def topKFrequent(self, nums: list[int], k: int) -> list[int]:
-        hash_dict = {}
-        count_list = []
+        count_dict = {}
         for n in nums:
-            if n not in hash_dict:
-                hash_dict[n] = len(count_list)   # 数字 → count_list 下标
-                count_list.append(1)
-            else:
-                count_list[hash_dict[n]] += 1
-        count2num = defaultdict(list)             # 频次 → 数字列表（桶思想）
-        for key, value in hash_dict.items():
-            count2num[count_list[value]].append(key)
-        heap = count_list[:k]                     # 先存变量（heapify 原地，不能直接传切片）
+            count_dict[n] = count_dict.get(n, 0) + 1
+
+        freq2num = []                                  # (频次, 数字)
+        for key, value in count_dict.items():
+            freq2num.append((value, key))
+
+        heap = freq2num[:k]
         heapq.heapify(heap)
-        for num in count_list[k:]:
-            if num > heap[0]:
-                heapq.heapreplace(heap, num)
-        result = []
-        for count in heap:
-            result.append(count2num[count].pop())  # 反查数字（堆里 count 出现几次就 pop 几个）
-        return result
+        for i in range(k, len(freq2num)):
+            if freq2num[i][0] > heap[0][0]:            # 频次比堆顶高 → 替换
+                heapq.heappushpop(heap, freq2num[i])
+        return [n[1] for n in heap]                    # 答案顺序任意
         
 
 # @lc code=end
