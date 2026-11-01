@@ -9,17 +9,26 @@ from leetgo_py import *
 
 class Solution:
     def lengthOfLIS(self, nums: list[int]) -> int:
-        # DP：dp[i] = 以 nums[i] 结尾的 LIS 长度 = max(dp[j]+1) for j<i and nums[j]<nums[i]
-        # 依赖前面所有 j → 不能用滚动变量，必须保留整个 dp 数组
-        n = len(nums)
-        dp = [1] * n
-        best = 0
-        for i in range(n):
-            for j in range(i):
-                if nums[i] > nums[j]:
-                    dp[i] = max(dp[i], dp[j] + 1)
-            best = max(best, dp[i])
-        return best
+        # 进阶 O(n log n)：tails[k] = 长度 k+1 递增子序列的最小末尾（严格递增 → 可二分）
+        # 新数 x：比所有尾巴大 → 追加（新长度）；否则二分替换"第一个 >= x"的位置（尾巴变小留空间）
+        length = len(nums)
+        tails = [nums[0]]
+        for i in range(1, length):
+            if nums[i] > tails[-1]:
+                tails.append(nums[i])
+            else:
+                left, right = 0, len(tails)
+                while left <= right:
+                    mid = (left + right) // 2
+                    if tails[mid] == nums[i]:
+                        break
+                    if tails[mid] > nums[i]:
+                        right = mid - 1
+                    else:
+                        left = mid + 1
+                else:
+                    tails[left] = nums[i]
+        return len(tails)
         
 
 # @lc code=end
