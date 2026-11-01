@@ -9,18 +9,28 @@ from leetgo_py import *
 
 class Solution:
     def maxProfit(self, prices: list[int]) -> int:
-        # 状态机 DP：dp[i][0]=持有, dp[i][1]=卖出(冷冻), dp[i][2]=休息
+        # 四状态 DP：0 持有 / 1 保持卖出(非冷冻) / 2 当天卖出 / 3 冷冻
+        # 买入只能从"保持卖出或冷冻"来；卖出从持有来；冷冻只能由"当天卖出"产生
         length = len(prices)
-        dp = [[0] * 3 for _ in range(length + 1)]
-        dp[0][0] = -prices[0]        # ★ 持有列 = 买入成本（不是卖出列！）
-        for i in range(1, length + 1):
-            # 今天持有 = max(昨天持有, 昨天休息 - 今天价)   ← 买入只能从 rest 来
-            dp[i][0] = max(dp[i - 1][0], dp[i - 1][2] - prices[i - 1])
-            # 今天卖出 = 昨天持有 + 今天价                  ← 卖出只能从 hold 来
-            dp[i][1] = dp[i - 1][0] + prices[i - 1]
-            # 今天休息 = max(昨天卖出, 昨天休息)            ← 冷冻结束 / 继续空仓
-            dp[i][2] = max(dp[i - 1][1], dp[i - 1][2])
-        return max(dp[length][1], dp[length][2])
+        dp = [[0, 0, 0, 0] for _ in range(length + 1)]
+        dp[0][0] = -prices[0]
+        for i in range(1, length):
+            # 持有
+            dp[i][0] = max(
+                dp[i - 1][0],                 # 前一天持有，保持持有
+                dp[i - 1][1] - prices[i],     # 前一天保持卖出，现在买入
+                dp[i - 1][3] - prices[i]      # 前一天冷冻，现在可以买入
+            )
+            # 保持卖出（不是冷冻期）
+            dp[i][1] = max(
+                dp[i - 1][1],                 # 前一天也是保持卖出
+                dp[i - 1][3]                  # 前一天是冷冻
+            )
+            # 卖出
+            dp[i][2] = dp[i - 1][0] + prices[i]   # 前一天是持有股票
+            # 冷冻
+            dp[i][3] = dp[i - 1][2]               # 必须是前一天卖出
+        return max(dp[length - 1])
         
 
 # @lc code=end
