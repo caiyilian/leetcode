@@ -9,23 +9,13 @@ from leetgo_py import *
 
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        # 记忆化递归（top-down DP）：枚举"最后一个偷的房子"
-        # f(n) = max(nums[n-1] + f(n-2), nums[n-2] + f(n-3))
-        length = len(nums)
-        if length == 1:
-            return nums[0]
-        mem = {1: nums[0], 2: max(nums[:2])}
-        def max_money(n):
-            if n == 0:
-                return 0
-            if n <= 2:
-                return mem[n]
-            if n not in mem:
-                # 偷最后一家（剩 n-2）或偷倒数第二家（剩 n-3）
-                max_n = max(nums[n-1] + max_money(n-2), nums[n-2] + max_money(n-3))
-                mem[n] = max_n
-            return mem[n]
-        return max_money(length)
+        # 滚动数组：dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        # 偷 i → dp[i-2] + nums[i]；不偷 i → dp[i-1]；只依赖前两个 → O(1) 空间
+        dp_ip1 = nums[0]         # dp[i-1]
+        dp_ip2 = 0               # dp[i-2]（初始为 0，相当于偷第 0 家之前）
+        for i in range(1, len(nums)):
+            dp_ip1, dp_ip2 = max(dp_ip1, dp_ip2 + nums[i]), dp_ip1
+        return dp_ip1
         
 
 # @lc code=end
