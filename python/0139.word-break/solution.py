@@ -9,18 +9,17 @@ from leetgo_py import *
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        # 记忆化递归（top-down）：枚举"第一个单词"，吃掉前缀递归判断剩余
-        mem = {'': True}
-        def fun(s):
-            if s not in mem:
-                final = False
-                for each_s in wordDict:
-                    if s.startswith(each_s) and fun(s[len(each_s):]):
-                        final = True
-                        break
-                mem[s] = final
-            return mem[s]
-        return fun(s)
+        # 前缀 DP：dp[i] = s[0:i] 能否拆分；dp[j] 真 + s[j:i]∈字典 → dp[i] 真
+        # 反向排除版：默认 True，找不到任何可接前缀（for-else）才标 False
+        length = len(s)
+        dp = [True] * (length + 1)
+        for i in range(1, length + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordDict:
+                    break
+            else:
+                dp[i] = False
+        return dp[-1]
         
 
 # @lc code=end
