@@ -9,15 +9,14 @@ from leetgo_py import *
 
 class Solution:
     def generate(self, numRows: int) -> list[list[int]]:
-        # 二维 DP：val[i][j] = val[i-1][j-1] + val[i-1][j]（左上 + 正上）
+        # 逐行构造：首尾补 1，中间元素 = 上一行相邻两数之和
         result = [[1]]
-        for i in range(1, numRows):
-            result.append([])
-            for j in range(i + 1):
-                v_im1_jm1 = result[i-1][j-1] if j-1 >= 0 else 0   # 左上邻居（越界补 0）
-                v_im1_j   = result[i-1][j]   if j < i   else 0   # 正上邻居（越界补 0）
-                val_i_j = v_im1_jm1 + v_im1_j
-                result[-1].append(val_i_j)
+        for layer in range(1, numRows):
+            each_list = [1]                                   # 首 1
+            for i in range(1, layer):
+                each_list.append(result[-1][i - 1] + result[-1][i])  # 上邻和
+            each_list.append(1)                               # 尾 1
+            result.append(each_list)
         return result
         
 
