@@ -9,26 +9,18 @@ from leetgo_py import *
 
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        # 0/1 背包（二维 DP）：dp[i][j] = 前 i 个物品、容量 j 的最大价值
+        # 0-1 背包一维滚动 bool 版：能否选出若干数和 = sum/2
+        # ⚡ 内层 t 从大到小倒序：防同一个数被重复使用（完全背包才正序）
         nums_sum = sum(nums)
-        if nums_sum % 2 == 1:
+        if nums_sum % 2 != 0:
             return False
         target = nums_sum // 2
-        num_arr = target + 1
-        num_obj = len(nums)
-
-        dp = [[0] * num_arr for _ in range(num_obj)]   # 列表推导式（勿用 [[0]*n]*m 浅拷贝）
-        for j in range(nums[0], num_arr):
-            dp[0][j] = nums[0]                          # 第 0 行：只放第一个物品
-        for i in range(1, num_obj):
-            for j in range(num_arr):
-                val_no_put = dp[i - 1][j]               # 不放物品 i
-                if j >= nums[i]:                        # 容量 j 放得下物品 i
-                    val_put = dp[i - 1][j - nums[i]] + nums[i]
-                else:
-                    val_put = 0
-                dp[i][j] = max(val_no_put, val_put)
-        return dp[num_obj - 1][target] == target        # 价值==重量时，dp 值即凑出的重量
+        dp = [False] * (target + 1)
+        dp[0] = True
+        for x in nums:
+            for t in range(target, x - 1, -1):
+                dp[t] = dp[t] or dp[t - x]
+        return dp[target]
         
 
 # @lc code=end
