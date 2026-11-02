@@ -10,18 +10,17 @@ from math import isinf
 
 class Solution:
     def coinChange(self, coins: list[int], amount: int) -> int:
-        # 迭代 DP：dp[i] = min(1 + dp[i-c]) for c in coins（最后一块硬币是 c）
-        min_money = min(coins)              # ★ 用 min，别用 coins[0]（coins 不一定排序）
-        dp = [0] * (amount + 1)
-        for i in range(1, amount + 1):
-            best = float("inf")
-            if i >= min_money:
-                for c in coins:
-                    if i < c:
-                        continue
-                    best = min(best, 1 + dp[i - c])
-            dp[i] = best
-        return -1 if isinf(dp[-1]) else dp[-1]
+        # 完全背包一维 DP：dp[i] = min(1 + dp[i-c])，每枚硬币无限用
+        # ⚡ 排序后内层 j>i 即 break：防 dp[i-j] 负下标 + 剪枝（RE 复盘：不判 j>i 会越界）
+        coins.sort()
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        for i in range(amount + 1):
+            for j in coins:
+                if j > i:
+                    break
+                dp[i] = min(1 + dp[i - j], dp[i])
+        return dp[amount] if isinf(dp[amount]) is False else -1
         
 
 # @lc code=end
