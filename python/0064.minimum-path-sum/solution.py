@@ -9,16 +9,19 @@ from leetgo_py import *
 
 class Solution:
     def minPathSum(self, grid: list[list[int]]) -> int:
-        # 从终点回填 + 一圈 inf 边界（省越界判断）
-        # dp[i][j] = min(下方, 右方) + grid[i][j]
+        # 记忆化递归（自顶向下 DP）：fun(i,j) = 到 (i,j) 的最小路径和
+        # ⚡ 越界返回 inf 哨兵（不可达路径自然被 min 淘汰）；起点兜底
         m, n = len(grid), len(grid[0])
-        dp = [[float('inf')] * (n + 1) for _ in range(m + 1)]   # 多一圈 inf
-        dp[m][n - 1] = 0    # 终点右方 = 0（终点不需额外 cost）
-        dp[m - 1][n] = 0    # 终点下方 = 0
-        for i in range(m):
-            for j in range(n):
-                dp[m - i - 1][n - j - 1] = min(dp[m - i][n - j - 1], dp[m - i - 1][n - j]) + grid[m - i - 1][n - j - 1]
-        return dp[0][0]
+        mem = {}
+        def fun(i, j):
+            if (i, j) not in mem:
+                if i == 0 and j == 0:
+                    return grid[0][0]
+                if i < 0 or j < 0:
+                    return float('inf')
+                mem[(i, j)] = min(fun(i, j - 1), fun(i - 1, j)) + grid[i][j]
+            return mem[(i, j)]
+        return fun(m - 1, n - 1)
         
 
 # @lc code=end
