@@ -9,12 +9,13 @@ from leetgo_py import *
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        # 迭代 DP（从终点回填）：dp[i][j] = dp[i+1][j] + dp[i][j+1]（下方 + 右方）
-        dp = [[1] * n for _ in range(m)]      # 全 1：第一行/列（及边界）都是 1
-        for i in range(1, m):
-            for j in range(1, n):
-                dp[m - i - 1][n - j - 1] = dp[m - i][n - j - 1] + dp[m - i - 1][n - j]
-        return dp[0][0]
+        # 二维 DP：dp[i][j] = dp[i-1][j] + dp[i][j-1]（从上 + 从左来）
+        # 1 索引 + 全 1 初始化：第 1 行/第 1 列天然只有一条路，免越界判断
+        dp = [[1] * (n + 1) for _ in range(m + 1)]
+        for i in range(2, m + 1):
+            for j in range(2, n + 1):
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        return dp[m][n]
         
 
 # @lc code=end
